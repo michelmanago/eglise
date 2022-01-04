@@ -1,0 +1,26 @@
+.biographyAside{
+    /*min-width: 350px;*/
+}
+
+.biographyAside h3{
+    color: #fff
+}
+
+.bioImage{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.bioInfoItem{
+    color: #fff;
+}
+
+.bioInfoItem p{
+    text-align: left;
+    font-size: 16px;
+}
+
+.bioInfoItem p:first-child{
+    min-width: 40%;
+
+}

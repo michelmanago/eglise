@@ -1,0 +1,95 @@
+.topBar{
+    height: 65px
+}
+
+.multilang{
+    position: relative;
+}
+
+.multilangList{
+    top: 35px;
+}
+
+.multilangList a{
+    display: block;
+}
+
+.logo{
+    width: 200px;
+
+}
+
+.headerNavLink button, .headerNavLink a{
+    text-align: left;
+}
+
+.headerNavLink a:hover{
+    text-decoration: underline;
+}
+
+
+
+
+/** From md **/
+
+/* Nav ul */
+.headerNav{
+    position: absolute;
+    top: 40px;
+    left: -1.25rem;
+    transition: ease-out .3s;
+    transition-property: transform;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    width: 80%;
+    user-select: none;
+}
+
+@media (min-width: 768px) { 
+
+    .headerNav{
+        position: relative;
+        left: 0;
+        top: 0;
+        flex-direction: row; 
+        width: 100%;
+    }
+}
+
+
+
+/* Link */
+
+.headerSubLink, .headerLink{
+    height: 50px;
+
+}
+
+.headerLink{
+    position: relative;
+}
+
+/* Sub nav */
+
+.headerSubNav{
+    display: none;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .4);
+    /* left: 100%; */
+}
+
+/* Sub link */
+.headerSubLink{
+    display: flex;
+    align-items:  center;
+}
+
+@media (min-width: 768px) { 
+
+    .headerSubNav{
+        min-width: 350px;
+        position: absolute;
+    }
+}

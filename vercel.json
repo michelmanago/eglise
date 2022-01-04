@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "pages/api/tombes/[carre]/index.js": {
+        "includeFiles": "carre/**"
+      }
+    }
+  }
