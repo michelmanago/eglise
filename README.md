@@ -1,6 +1,6 @@
-# cimetiere
+# Eglise
 
-Project For cimetière russe de Sainte Geneviève des Bois.
+Project For eglise russe de Sainte Geneviève des Bois.
 
 # Configure next.config.js
 
