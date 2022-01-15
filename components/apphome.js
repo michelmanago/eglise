@@ -13,7 +13,7 @@ AppHome({ currentLanguage }) {
 				<div className="w-full mt-1 py-6 overflow-hidden md:flex ">
 					<div className="mx-2 sm:mx-20">
 						<img className="md:float-left md:mr-6 md:mb-4 flex md:w-2/5 " 
-						src="/static/img/eglise-russe-sainte-geneviève-des-bois1ère-page.jpg" alt="cimetière et église russe de st geneviève des bois" />
+						src="/static/img/cimetiere-eglise-russe-sainte-geneviève-des-bois1ère-page.jpg" alt="cimetière et église russe de st geneviève des bois" />
 						<h2 className="md:-mt-4">La Nécropole Russe de Sainte Geneviève des Bois</h2>
 						<p className="text-justify">
 
