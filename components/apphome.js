@@ -13,12 +13,14 @@ AppHome({ currentLanguage }) {
 				<div className="w-full mt-1 py-6 overflow-hidden md:flex ">
 					<div className="mx-2 sm:mx-20">
 						<img className="md:float-left md:mr-6 md:mb-4 flex md:w-2/5 " 
-						src="/static/img/cimetiere-eglise-russe-sainte-geneviève-des-bois1ère-page.jpg" alt="cimetière et église russe de st geneviève des bois" />
+						src="/static/img/eglise-russe-sainte-geneviève-des-bois1ère-page.jpg" alt="cimetière et église russe de st geneviève des bois" />
 						<h2 className="md:-mt-4">La Nécropole Russe de Sainte Geneviève des Bois</h2>
 						<p className="text-justify">
 
 						La nécropole russe comprend d'une part l'église orthodoxe de la Dormition de la sainte mère de Dieu et vierge Marie, 
 						ses dépendances et son jardin, et d'autre part les tombes russes orthodoxes du cimetière communal de Sainte Geneviève des Bois. 
+
+						Le site du cimetiere russe, anciennement accessible à partir du présent site, a été déaplacé à l'adresse <a href="cimetiere-russe.org">cimetiere-russe.org</a>.
 						</p><p className="text-justify">
 						L'origine du cimetière provient de l'accueil fait aux émigrés russes âgés à la « Maison Russe » au château de la Cossonerie située à 500 mètres du cimetière, 
 						qui furent enterrés là dès 1927, poussant la municipalité de Sainte Geneviève des Bois à créer un « carré russe » au sein du cimetière communal. 
