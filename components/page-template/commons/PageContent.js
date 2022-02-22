@@ -122,7 +122,7 @@ export default function PageContent({pageName, blocks, attribs}) {
     }
 
     return (
-        <div className="pagecontent">
+        <div className="overflow-hidden pagecontent overflow-ellipsis">
             {/* Title */}
             <h1 className="mb-10 text-5xl font-bold">{pageName}</h1>
 
