@@ -253,7 +253,6 @@ export async function selectAllPages(locale = null, category = '') {
     else return null;
 }
 
-
 export async function selectPaginatedPages(offset = 0, limit = 15, locale = null, category = '', search) {
     let parameters = [];
     let conditionalWhere = '';
@@ -268,18 +267,18 @@ export async function selectPaginatedPages(offset = 0, limit = 15, locale = null
         conditionalWhere += ' AND page = ? ';
     }
 
-    if(search){
-        conditionalWhere += `AND pageName LIKE '%${search}%'`
+    if (search) {
+        conditionalWhere += `AND pageName LIKE '%${search}%'`;
     }
 
     // pagination
-    parameters.push(limit)
-    parameters.push(offset * limit)
+    parameters.push(limit);
+    parameters.push(offset * limit);
 
     const res = await query(
         `
         SELECT p.*, t.original_id as original_id FROM pagecontent p, page_translations t
-        WHERE t.child_id = p.id ${conditionalWhere} AND page != 'defunt'
+        WHERE t.child_id = p.id ${conditionalWhere}
 
         ORDER BY p.created_at DESC
         LIMIT ? OFFSET ?
@@ -288,20 +287,22 @@ export async function selectPaginatedPages(offset = 0, limit = 15, locale = null
     );
 
     // count pages
-    const parametersForCount = []
-    if(locale) parametersForCount.push(locale)
-    if(category) parametersForCount.push(category)
-    
-    let item_count = 0
-    item_count = (await query(`
+    const parametersForCount = [];
+    if (locale) parametersForCount.push(locale);
+    if (category) parametersForCount.push(category);
+
+    let item_count = 0;
+    item_count = await query(
+        `
         SELECT p.*, t.original_id as original_id 
         FROM pagecontent p, page_translations t
         WHERE t.child_id = p.id ${conditionalWhere} AND page != 'defunt'
-    `, parametersForCount))
-    item_count = item_count.length
+    `,
+        parametersForCount,
+    );
+    item_count = item_count.length;
 
-
-    const pages = JSON.parse(JSON.stringify(res))
+    const pages = JSON.parse(JSON.stringify(res));
 
     return {
         array: pages,
@@ -310,8 +311,7 @@ export async function selectPaginatedPages(offset = 0, limit = 15, locale = null
             item_count_current_page: pages.length,
             item_count: item_count,
             page: Number(offset),
-            page_count: Math.ceil(item_count / limit)
-        }
-    }
-
+            page_count: Math.ceil(item_count / limit),
+        },
+    };
 }
