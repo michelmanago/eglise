@@ -1,7 +1,7 @@
 // libs
 import React, {useEffect, useState} from 'react';
 import Head from 'next/head';
-import {changeNodeAtPath, insertNode, removeNodeAtPath, getNodeAtPath} from 'react-sortable-tree';
+import {changeNodeAtPath, insertNode, removeNodeAtPath, getNodeAtPath} from 'react-sortable-tree-patch-react-17';
 
 // components
 import Header from '../../components/header/header';
