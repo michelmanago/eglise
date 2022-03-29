@@ -6,7 +6,7 @@ import {useRouter} from 'next/router';
 import Header from '../components/header/header';
 //import Header from '@/components/header';
 import Footer from '@/components/footer';
-import { getMenu } from '@/Model/menu';
+import {getMenu} from '@/Model/menu';
 
 export default function Login({menu}) {
     const router = useRouter();
@@ -35,7 +35,7 @@ export default function Login({menu}) {
             localStorage.setItem('user', JSON.stringify(json));
             if (router.query && router.query.redirect) router.push(router.query.redirect);
             else router.push('/');
-        } else if (resp.status === 401) {
+        } else if (resp.status === 401 || resp.status === 500) {
             error = true;
             message.push('Login / Mot de passe incorrect');
         }
@@ -51,7 +51,7 @@ export default function Login({menu}) {
             <div className="flex flex-col bg-pwhite">
                 <div className="grid mx-2 my-5 place-items-center">
                     <div className="w-11/12 p-12 px-6 py-10 bg-white rounded-lg shadow-md sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12 sm:px-10 sm:py-6 lg:shadow-lg">
-                        <h1 className="text-3xl font-semibold text-center text-gray-800 lg:text-4xl">Login</h1>
+                        <h1 className="text-3xl font-semibold text-center text-gray-800 lg:text-4xl">Connection</h1>
                         {router.query.new && (
                             <div className="mt-5">
                                 Merci de votre inscription, vous avez reçu un lien d'acitvation de votre compte par mail
@@ -96,12 +96,12 @@ export default function Login({menu}) {
                                 type="submit"
                                 onClick={handleLogin}
                             >
-                                Login
+                                Connection
                             </button>
                             <div className="mt-8 text-sm text-center sm:flex sm:flex-wrap sm:mb-4">
                                 <Link href="/resetpassword">
                                     <a href="forgot-password" className="underline flex-2">
-                                        Forgot password?
+                                        Mot de passe oublié ?
                                     </a>
                                 </Link>
                                 <p className="flex-1 mx-4 my-1 text-gray-500 text-md sm:my-auto">or</p>
@@ -111,7 +111,7 @@ export default function Login({menu}) {
                                         query: router.query.redirect ? {redirect: router.query.redirect} : {},
                                     }}
                                 >
-                                    <a className="underline flex-2">Create an Account</a>
+                                    <a className="underline flex-2">Créer un compte</a>
                                 </Link>
                             </div>
                             <Link href={`/admin`}>
