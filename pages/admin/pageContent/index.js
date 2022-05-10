@@ -21,16 +21,14 @@ export default function PageContent({blocks}) {
 
             <ul>
                 {blocks.map(block => (
-                    <li key={block.id} className='my-2'>
+                    <li key={block.id} className="my-2">
                         <Link href={`/editor/${block.id}`}>
                             <a>
                                 {block.id} {block.page} {block.language}
                             </a>
                         </Link>
                         <Link href={`/admin/pageContent/${block.id}`}>
-                            <a className='px-2 ml-2 border border-gray-500 rounded'>
-                                Test Render
-                            </a>
+                            <a className="px-2 ml-2 border border-gray-500 rounded">Test Render</a>
                         </Link>
                     </li>
                 ))}
@@ -55,7 +53,7 @@ export async function getServerSideProps(context) {
     if (req) {
         let host = req.headers.host; // will give you localhost:3000
         let protocol = 'https://';
-        if (host === 'localhost:3000') {
+        if (host.startsWith('localhost')) {
             protocol = 'http://';
         }
         const res = await fetch(`${protocol}${host}/api/blocks`);

@@ -42,7 +42,7 @@ export default function PageContent({blocks}) {
                     setPjState(blocks);
                     setMessage('Document supprimer');
                     setTimeout(() => {
-                        setMessage("")
+                        setMessage('');
                     }, 5000);
                 } else {
                     return null;
@@ -59,7 +59,7 @@ export default function PageContent({blocks}) {
 
             <h1 className="m-4">PageContent Admin</h1>
 
-            <div className='w-1/4 mx-auto text-center bg-green-300 rounded'>{message}</div>
+            <div className="w-1/4 mx-auto text-center bg-green-300 rounded">{message}</div>
 
             <div className="mx-4 mt-2 border-t border-l border-r border-black">
                 <div className="flex flex-wrap border-b border-black">
@@ -109,7 +109,7 @@ export async function getServerSideProps(context) {
     if (req) {
         let host = req.headers.host; // will give you localhost:3000
         let protocol = 'https://';
-        if (host === 'localhost:3000') {
+        if (host.startsWith('localhost')) {
             protocol = 'http://';
         }
         const res = await fetch(`${protocol}${host}/api/pieceJointe`);

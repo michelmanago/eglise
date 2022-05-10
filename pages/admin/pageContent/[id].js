@@ -39,11 +39,11 @@ export async function getServerSideProps(context) {
         authorize(res, '', secret);
     }
 
-    const { id } = context.query;
+    const {id} = context.query;
     if (req) {
         let host = req.headers.host; // will give you localhost:3000
         let protocol = 'https://';
-        if (host === 'localhost:3000') {
+        if (host.startsWith('localhost')) {
             protocol = 'http://';
         }
         const res = await fetch(`${protocol}${host}/api/blocks/${id}`);

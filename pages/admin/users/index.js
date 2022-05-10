@@ -190,7 +190,7 @@ export async function getServerSideProps(context) {
     if (req) {
         let host = req.headers.host; // will give you localhost:3000
         let protocol = 'https://';
-        if (host === 'localhost:3000') {
+        if (host.startsWith('localhost')) {
             protocol = 'http://';
         }
         const res = await fetch(`${protocol}${host}/api/users`);
