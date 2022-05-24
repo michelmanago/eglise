@@ -34,13 +34,13 @@ export default function Index({menu, page}) {
             throw 'Erreur. langue inconnue dans index.js : ' + locale;
     }
     return (
-        <div className="bg-pwhite">
+        <div className="">
             <Head>
                 <title>{title}</title>
             </Head>
 
             {page ? (
-                <>
+                <div className="container max-w-screen-xl bg-white sm:mx-auto">
                     {/* Header */}
                     {menu && <Header menu={menu.data} currentLanguage={locale} />}
                     {page.bandeau && (
@@ -53,11 +53,11 @@ export default function Index({menu, page}) {
                         </div>
                     )}
                     {/* Content */}
-                    <main className="h-full max-w-screen-xl px-10 py-10 mx-auto bg-pwhite">
+                    <main className="h-full max-w-screen-xl px-10 py-10 mx-auto bg-white">
                         <PageContent blocks={page.blocks} pageName={page.pageName} />
                     </main>
                     <Footer />
-                </>
+                </div>
             ) : (
                 <AppHome currentLanguage={locale} />
             )}
