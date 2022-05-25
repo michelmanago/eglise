@@ -3,13 +3,14 @@ import {useRouter} from 'next/router';
 
 import Layout from '../components/layout';
 import AppHome from '../components/apphome';
-import {getLastPages} from '@/Model/page';
+import {getLastPages, getPageByType} from '@/Model/page';
 import {getMediaLink, getServeurImageMedia} from 'utils/utils-serveur-image';
 
 import {getMenu} from '@/Model/menu';
 import Header from '@/components/header/header';
 import PageContent from '@/components/page-template/commons/PageContent';
 import Footer from '@/components/footer';
+import {getSingleMedia} from '@/Model/media';
 
 // styles
 const bannerStyles = {
@@ -73,6 +74,18 @@ export const getServerSideProps = async ctx => {
         const bandeau = await getServeurImageMedia(homePages[0].bandeau_id);
         homePages[0].bandeau = bandeau;
         homePages[0].blocks = JSON.parse(homePages[0].blocks);
+        for (var block of homePages[0]?.blocks) {
+            //console.log('block type', block.type);
+            if (block.type === 'list') {
+                const pageList = await getPageByType(block.content);
+                for (var pageInList of pageList) {
+                    if (pageInList.bandeau_id) {
+                        pageInList.bandeau = await getSingleMedia(pageInList.bandeau_id);
+                    }
+                }
+                block.pageList = pageList.filter(page => page.language === ctx.locale);
+            }
+        }
     }
     return {
         props: {
