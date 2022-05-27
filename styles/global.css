@@ -132,7 +132,7 @@ h2 {
 }
 
 h3 {
-    @apply pt-4 text-xl font-light leading-tight;
+    @apply pt-4 text-xl font-bold leading-tight;
 }
 
 p {

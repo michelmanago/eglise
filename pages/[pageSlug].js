@@ -65,6 +65,12 @@ export default function DynPage({menu, page}) {
                         </div>
                     </div>
                 );
+            } else if (page.page === 'article') {
+                return (
+                    <div className="max-w-screen-xl px-10 py-10 mx-auto bg-pwhite">
+                        <PageDefault key={page.id} page={page} />
+                    </div>
+                );
             }
             return (
                 <div className="max-w-screen-xl px-10 py-10 mx-auto bg-pwhite">
@@ -90,7 +96,7 @@ export default function DynPage({menu, page}) {
             <Header currentPage={''} currentLanguage={locale} menu={menu.data} translations={page.translations} />
 
             {/* Banner */}
-            {page.bandeau && (
+            {page.bandeau && page.page != 'article' && (
                 <div style={bannerStyles} className="">
                     <img
                         className="block object-cover w-full h-full"
