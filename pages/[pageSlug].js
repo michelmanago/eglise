@@ -88,7 +88,7 @@ export default function DynPage({menu, page}) {
 
     // hooks
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="container max-w-screen-xl bg-white sm:mx-auto">
             <Head>
                 <title>{page && page.pageName}</title>
             </Head>

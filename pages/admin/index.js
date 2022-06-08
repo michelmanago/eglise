@@ -14,7 +14,7 @@ import authorize from '@/lib/authorize';
 import {useState} from 'react';
 import AdminView from '@/components/Admin/admin-view';
 import AuteurView from '@/components/Admin/auteur-view';
-import { getMenu } from '@/Model/menu';
+import {getMenu} from '@/Model/menu';
 
 const linkStyles = {
     width: 300,
@@ -44,16 +44,12 @@ export default function Admin({menu}) {
                         <h1 className="mb-5 text-4xl font-semibold">Administrer le site</h1>
                         <div className="flex flex-col">
                             <BlockLink label="Pages" href="/admin/page" />
-                            <BlockLink label="Defunts" href="/admin/defunts" />
                             <BlockLink label="Catégories" href="/admin/category" />
                             <BlockLink label="Menus de navigation" href="/admin/editor-menu" />
                             <BlockLink label="Utilisateurs" href="/admin/users/create" />
                             <BlockLink label="Media" href="/admin/media" />
                         </div>
                     </main>
-
-                    <div>Old Admin</div>
-                    <AdminView />
                 </>
             ) : user && user.role === 'auteur' ? (
                 <>
