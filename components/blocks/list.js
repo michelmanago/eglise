@@ -1,4 +1,5 @@
 import {getProperDate} from '@/lib/date';
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 
@@ -6,6 +7,7 @@ export default function ListBlock({category, pageList}) {
     const router = useRouter();
     const {locale, locales, defaultLocale} = router;
     const apiMediaUrl = `${process.env.NEXT_PUBLIC_SERVER_IMAGE}`;
+    const {t} = useTranslation();
     return (
         <div>
             <div className="flex flex-wrap">
@@ -28,6 +30,13 @@ export default function ListBlock({category, pageList}) {
                         </div>
                     ))}
             </div>
+            {category === 'article' && (
+                <div className="flex flex-row justify-center">
+                    <Link href={`/articles`}>
+                        <a className="p-2 text-white rounded bg-pgold">{t('common:article_list')}</a>
+                    </Link>
+                </div>
+            )}
         </div>
     );
 }

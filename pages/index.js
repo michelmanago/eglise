@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 
-import Layout from '../components/layout';
 import AppHome from '../components/apphome';
 import {getLastPages, getPageByType} from '@/Model/page';
 import {getMediaLink, getServeurImageMedia} from 'utils/utils-serveur-image';
