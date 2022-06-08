@@ -19,7 +19,6 @@ import {getMediaLink} from '../utils/utils-serveur-image';
 import Footer from '@/components/footer';
 import {useRouter} from 'next/router';
 import {getSingleMedia} from '@/Model/media';
-import DefuntView from '@/components/defunt-view';
 import {getDefunt} from './api/defunts/[id]';
 import DefuntBlock from '@/components/blocks/defunt';
 //import { getSingleMedia } from '@/Model/media';
