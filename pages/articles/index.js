@@ -36,7 +36,7 @@ export default function Articles({menu, articles}) {
                         <main className="mx-2 mt-4 sm:mx-20">
                             <div className="flex flex-wrap">
                                 {articles?.map(article => (
-                                    <div className="w-full px-2 sm:w-1/2 md:w-1/3" key={article.id}>
+                                    <div className="w-full px-2 mt-2 sm:w-1/2 md:w-1/3" key={article.id}>
                                         {console.log(article.bandeau)}
                                         <Link href={`/${article.pageSlug}`}>
                                             <a className="flex flex-col gap-1">
@@ -47,7 +47,7 @@ export default function Articles({menu, articles}) {
                                                     />
                                                 ) : null}
                                                 <h3 className="inline-block">{article.pageName}</h3>
-                                                <div className="inline-block mx-2 text-sm">
+                                                <div className="inline-block text-sm">
                                                     {t('common:article_date')} {getProperDate(article.created_at)}
                                                 </div>
                                             </a>

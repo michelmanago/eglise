@@ -16,7 +16,7 @@ export default function ListBlock({category, pageList}) {
                     .sort((a, b) => (a.created_at > b.created_at ? -1 : b.created_at > a.created_at ? 1 : 0))
                     .slice(0, 6)
                     .map(article => (
-                        <div className="w-full px-2 sm:w-1/2 md:w-1/3" key={article.id}>
+                        <div className="w-full px-2 mt-2 sm:w-1/2 md:w-1/3" key={article.id}>
                             {console.log(article.bandeau)}
                             <Link href={`/${article.pageSlug}`}>
                                 <a className="flex flex-col gap-1">
@@ -24,7 +24,7 @@ export default function ListBlock({category, pageList}) {
                                         <img className="mx-auto" src={`${apiMediaUrl}${article.bandeau.public_path}`} />
                                     ) : null}
                                     <h3 className="inline-block">{article.pageName}</h3>
-                                    <div className="inline-block mx-2 text-sm">
+                                    <div className="inline-block text-sm">
                                         {t('common:article_date')} {getProperDate(article.created_at)}
                                     </div>
                                 </a>
@@ -33,7 +33,7 @@ export default function ListBlock({category, pageList}) {
                     ))}
             </div>
             {category === 'article' && (
-                <div className="flex flex-row justify-center">
+                <div className="flex flex-row justify-center mt-2">
                     <Link href={`/articles`}>
                         <a className="p-2 text-white rounded bg-pgold">{t('common:article_list')}</a>
                     </Link>
