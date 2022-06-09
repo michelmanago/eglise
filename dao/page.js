@@ -241,10 +241,12 @@ export async function selectAllPages(locale = null, category = '') {
         conditionalWhere += ' AND page = ? ';
     }
 
+    console.log({conditionalWhere});
+
     const res = await query(
         `
         SELECT p.*, t.original_id as original_id FROM pagecontent p, page_translations t
-        WHERE t.child_id = p.id ${conditionalWhere} AND p.page != 'defunt'
+        WHERE t.child_id = p.id ${conditionalWhere}
 
         ORDER BY p.created_at DESC
         `,
