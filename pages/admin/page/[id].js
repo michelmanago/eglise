@@ -16,7 +16,7 @@ import PageEditor from '../../../components/page-editor/page-editor';
 // utils
 import {toMysqlFormat} from '../../../utils/utils';
 import {bulkAttributePageToMedia} from '../../../utils/fetch/attributePageToMedia';
-import { getAllCategories } from '../../../Model/category';
+import {getAllCategories} from '../../../Model/category';
 
 // utils
 
@@ -40,6 +40,7 @@ export default function PageEditorUpdate({menu, pageTranslations, categories}) {
         const now = toMysqlFormat(new Date());
         formPages = formPages.map(formPagesItem => ({
             ...formPagesItem,
+            created_at: toMysqlFormat(new Date(formPagesItem.created_at)),
             last_modified: now,
         }));
 
@@ -79,13 +80,12 @@ export default function PageEditorUpdate({menu, pageTranslations, categories}) {
         <>
             <Head>
                 <title>Edition de page - {pageTranslations[0] && pageTranslations[0].pageName}</title>
-                
             </Head>
 
             {menu && <Header menu={menu.data} />}
             <main className="bg-white">
                 {pageTranslations && pageTranslations.length && (
-                    <PageEditor editedPages={pageTranslations} onFormSubmitted={onSubmit} categories={categories}/>
+                    <PageEditor editedPages={pageTranslations} onFormSubmitted={onSubmit} categories={categories} />
                 )}
             </main>
         </>
@@ -102,7 +102,7 @@ export async function getServerSideProps(context) {
     // current page edited
     const {id} = context.params;
     const pageTranslations = await getPageTranslations(id);
-    const categories = await getAllCategories()
+    const categories = await getAllCategories();
 
     /*if (!session) {
         return {

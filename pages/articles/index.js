@@ -39,7 +39,7 @@ export default function Articles({menu, articles}) {
                                     <div className="w-full px-2 sm:w-1/2 md:w-1/3" key={article.id}>
                                         {console.log(article.bandeau)}
                                         <Link href={`/${article.pageSlug}`}>
-                                            <a>
+                                            <a className="flex flex-col gap-1">
                                                 {article.bandeau ? (
                                                     <img
                                                         className="mx-auto"
@@ -48,7 +48,7 @@ export default function Articles({menu, articles}) {
                                                 ) : null}
                                                 <h3 className="inline-block">{article.pageName}</h3>
                                                 <div className="inline-block mx-2 text-sm">
-                                                    {getProperDate(article.created_at)}
+                                                    {t('common:article_date')} {getProperDate(article.created_at)}
                                                 </div>
                                             </a>
                                         </Link>

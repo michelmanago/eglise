@@ -34,7 +34,7 @@ export default function Login({menu}) {
         if (resp.status === 200) {
             localStorage.setItem('user', JSON.stringify(json));
             if (router.query && router.query.redirect) router.push(router.query.redirect);
-            else router.push('/');
+            else router.push('/admin');
         } else if (resp.status === 401 || resp.status === 500) {
             error = true;
             message.push('Login / Mot de passe incorrect');
