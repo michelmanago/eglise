@@ -4,13 +4,24 @@ import {useRouter} from 'next/router';
 
 // components
 import Nav from '../nav/nav';
+import {fetchWrapper} from 'utils/utils';
+import Link from 'next/link';
 
 export default function Header({menu, translations}) {
     //const [session] = useSession();
 
     /** Hooks */
     const router = useRouter();
-    const {locale, locales, defaultLocale} = router;
+    //const {locale, locales, defaultLocale} = router;
+
+    const [user, setUser] = useState();
+
+    if (typeof window !== 'undefined') {
+        // Access localStorage
+        if (!user && localStorage.getItem('user')) {
+            setUser(JSON.parse(localStorage.getItem('user')));
+        }
+    }
 
     /** States */
     const [isLangMenuOpened, setIsLangMenuOpened] = useState(false);
@@ -27,6 +38,35 @@ export default function Header({menu, translations}) {
             {/* Top bar */}
             <Nav menu={menu} translations={translations} />
 
+            {user ? (
+                <div className="flex flex-row justify-center">
+                    <div className="flex flex-row gap-2 p-2 text-white rounded-b bg-pdarkblue">
+                        <div>{user.name}</div>
+                        <div
+                            className=""
+                            onClick={async e => {
+                                const res = await fetchWrapper('/api/logout', null, 'GET');
+                                if (res.status === 200) {
+                                    localStorage.removeItem('user');
+                                    router.reload();
+                                    //let resJson = await res.json();
+                                    //console.log(resJson.message);
+                                }
+                            }}
+                        >
+                            Déconnection
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="flex flex-row justify-center">
+                    <div className="flex flex-row gap-2 p-2 text-white rounded-b bg-pdarkblue">
+                        <Link href={'/login'}>
+                            <a className="text-white">Connection</a>
+                        </Link>
+                    </div>
+                </div>
+            )}
             {/*session && (
                 <div className='flex flex-row items-center justify-center'>
                     {session.user.image && (

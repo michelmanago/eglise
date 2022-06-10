@@ -33,7 +33,7 @@ export default function Admin({menu}) {
     }
 
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-white">
+        <div className="container max-w-screen-xl bg-white sm:mx-auto">
             <Header currentLanguage={locale} currentPage={''} menu={menu.data} />
 
             <h1>Admin Page</h1>
@@ -84,14 +84,12 @@ export async function getServerSideProps(context) {
     const cookie = req?.headers.cookie;
     //console.log(cookie);
     const secret = process.env.LOGIN_SECRET;
-    /*if (cookie) {
+    if (cookie) {
         const parsedCookies = Cookie.parse(cookie);
         authorize(res, parsedCookies, secret);
     } else {
         authorize(res, '', secret);
-    }*/
-
-    //authorize(res, parsedCookies, secret);
+    }
 
     const menu = await getMenu(context.locale);
 
