@@ -43,14 +43,12 @@ export default function Header({menu, translations}) {
                     <div className="flex flex-row gap-2 p-2 text-white rounded-b bg-pdarkblue">
                         <div>{user.name}</div>
                         <div
-                            className=""
+                            className="cursor-pointer"
                             onClick={async e => {
                                 const res = await fetchWrapper('/api/logout', null, 'GET');
                                 if (res.status === 200) {
                                     localStorage.removeItem('user');
                                     router.reload();
-                                    //let resJson = await res.json();
-                                    //console.log(resJson.message);
                                 }
                             }}
                         >
