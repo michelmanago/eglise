@@ -15,7 +15,7 @@ export default function PageContent({block}) {
     const {locale} = router;
 
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="container max-w-screen-xl sm:mx-auto bg-white">
             <Header currentLanguage={locale} currentPage={''} />
 
             <h1>Test PageContent Render</h1>

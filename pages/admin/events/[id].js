@@ -27,8 +27,8 @@ export default function Event({events}) {
             body: JSON.stringify(eventList),
         });
         if (res.ok) router.push('/admin/events');
-    }
-    const setEvent = () => {}
+    };
+    const setEvent = () => {};
     const changeDate = event => {
         console.log(event.target.value);
         let newEventList = [...eventList];
@@ -38,41 +38,41 @@ export default function Event({events}) {
         setEventList(newEventList);
     };
     return (
-        <div className='max-w-screen-xl sm:mx-auto bg-pwhite'>
+        <div className="max-w-screen-xl sm:mx-auto bg-white">
             <Header currentLanguage={locale} currentPage={''} />
-            <main className='mx-2'>
+            <main className="mx-2">
                 <div className="flex mt-1 place-content-center">
                     <button type="submit" onClick={saveEvent} className="w-48 py-3 bg-pgold">
                         Enregistrement
                     </button>
                 </div>
-                <input type='date' value={events[0].date ? events[0].date : ''} onChange={changeDate} />
+                <input type="date" value={events[0].date ? events[0].date : ''} onChange={changeDate} />
                 <div className="flex flex-row my-1">
-                        <div
-                            className={`px-2 py-1 mx-1 border border-black cursor-pointer ${
-                                langState === 'FR' ? 'bg-gray-400' : ''
-                            }`}
-                            onClick={e => setLangState('FR')}
-                        >
-                            FR
-                        </div>
-                        <div
-                            className={`px-2 py-1 mx-1 border border-black cursor-pointer ${
-                                langState === 'EN' ? 'bg-gray-400' : ''
-                            }`}
-                            onClick={e => setLangState('EN')}
-                        >
-                            EN
-                        </div>
-                        <div
-                            className={`px-2 py-1 mx-1 border border-black cursor-pointer ${
-                                langState === 'RU' ? 'bg-gray-400' : ''
-                            }`}
-                            onClick={e => setLangState('RU')}
-                        >
-                            RU
-                        </div>
+                    <div
+                        className={`px-2 py-1 mx-1 border border-black cursor-pointer ${
+                            langState === 'FR' ? 'bg-gray-400' : ''
+                        }`}
+                        onClick={e => setLangState('FR')}
+                    >
+                        FR
                     </div>
+                    <div
+                        className={`px-2 py-1 mx-1 border border-black cursor-pointer ${
+                            langState === 'EN' ? 'bg-gray-400' : ''
+                        }`}
+                        onClick={e => setLangState('EN')}
+                    >
+                        EN
+                    </div>
+                    <div
+                        className={`px-2 py-1 mx-1 border border-black cursor-pointer ${
+                            langState === 'RU' ? 'bg-gray-400' : ''
+                        }`}
+                        onClick={e => setLangState('RU')}
+                    >
+                        RU
+                    </div>
+                </div>
                 {langState === 'FR' && (
                     <EventLang event={eventList.filter(elt => elt.lang === 'fr')[0]} setEvent={setEvent} />
                 )}
@@ -104,7 +104,9 @@ export async function getServerSideProps(context) {
 
     const events = await getCalendarEventByEventId(event_id);
 
-    return {props: {
-        events: events
-    }};
+    return {
+        props: {
+            events: events,
+        },
+    };
 }

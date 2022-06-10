@@ -14,31 +14,30 @@ export default function Activate(props) {
         title: '',
         phrase1: '',
         phrase2: '',
-        link: ''
-    }
-
+        link: '',
+    };
 
     switch (locale) {
         case 'fr':
             title = 'Activation de compte';
-            struct.title = 'Bienvenue'
-            struct.phrase1 = 'Votre compte est activé'
-            struct.phrase2 = 'Vous pouvez maintenant vous '
-            struct.link = 'Connecter'
+            struct.title = 'Bienvenue';
+            struct.phrase1 = 'Votre compte est activé';
+            struct.phrase2 = 'Vous pouvez maintenant vous ';
+            struct.link = 'Connecter';
             break;
         case 'en':
             title = 'Compte Activation';
-            struct.title = 'Welcome'
-            struct.phrase1 = 'Your account is now activate'
-            struct.phrase2 = 'You can now you '
-            struct.link = 'Connect'
+            struct.title = 'Welcome';
+            struct.phrase1 = 'Your account is now activate';
+            struct.phrase2 = 'You can now you ';
+            struct.link = 'Connect';
             break;
         case 'ru':
             title = 'Военные площади';
-            struct.title = 'Welcome ru'
-            struct.phrase1 = 'Your account is now activate'
-            struct.phrase2 = 'You can now you '
-            struct.link = 'Connect'
+            struct.title = 'Welcome ru';
+            struct.phrase1 = 'Your account is now activate';
+            struct.phrase2 = 'You can now you ';
+            struct.link = 'Connect';
             break;
         default:
             throw 'Erreur. langue inconnue dans eglise.js : ' + locale;
@@ -49,7 +48,7 @@ export default function Activate(props) {
             <Head>
                 <title>{title}</title>
             </Head>
-            <div className="bg-pwhite">
+            <div className="bg-white">
                 <Header currentLanguage={locale} currentPage={''} />
                 <main className="px-2 md:px-24">
                     <h2>{struct.title}</h2>
@@ -57,7 +56,7 @@ export default function Activate(props) {
                     <p>
                         {struct.phrase2}
                         <Link href="/login">
-                            <a className='underline'>{struct.link}</a>
+                            <a className="underline">{struct.link}</a>
                         </Link>
                     </p>
                 </main>

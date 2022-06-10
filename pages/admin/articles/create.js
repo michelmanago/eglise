@@ -16,9 +16,33 @@ export default function CreateArticle({nextArticleId}) {
     const {locale} = router;
     const imgBaseUrl = `${process.env.NEXT_PUBLIC_UPLOAD_SERVER_HOST}/uploads`;
     const [articles, setArticles] = useState(() => [
-        {image: '', title: '', date: formatDate(new Date()), content: '', lang: 'fr', article_id: nextArticleId, tmpId: 0},
-        {image: '', title: '', date: formatDate(new Date()), content: '', lang: 'en', article_id: nextArticleId, tmpId: 1},
-        {image: '', title: '', date: formatDate(new Date()), content: '', lang: 'ru', article_id: nextArticleId, tmpId: 2},
+        {
+            image: '',
+            title: '',
+            date: formatDate(new Date()),
+            content: '',
+            lang: 'fr',
+            article_id: nextArticleId,
+            tmpId: 0,
+        },
+        {
+            image: '',
+            title: '',
+            date: formatDate(new Date()),
+            content: '',
+            lang: 'en',
+            article_id: nextArticleId,
+            tmpId: 1,
+        },
+        {
+            image: '',
+            title: '',
+            date: formatDate(new Date()),
+            content: '',
+            lang: 'ru',
+            article_id: nextArticleId,
+            tmpId: 2,
+        },
     ]);
     const [langState, setLangState] = useState('FR');
 
@@ -81,7 +105,7 @@ export default function CreateArticle({nextArticleId}) {
     };
 
     return (
-        <div className="max-w-screen-xl bg-pwhite sm:mx-auto">
+        <div className="max-w-screen-xl bg-white sm:mx-auto">
             <Header currentLanguage={locale} currentPage={''} />
             <main>
                 <div className="flex mt-1 place-content-center">

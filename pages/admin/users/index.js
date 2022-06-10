@@ -116,7 +116,7 @@ export default function Users({usersProp}) {
     };
 
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="container max-w-screen-xl sm:mx-auto bg-white">
             <Header currentLanguage={locale} currentPage={''} />
 
             <h1 className="m-4">Admin Utilisateurs</h1>

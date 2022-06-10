@@ -50,7 +50,7 @@ export default function Editor({block}) {
             <Head>
                 <title>{title}</title>
             </Head>
-            <div className="container max-w-screen-xl mx-auto bg-pwhite">
+            <div className="container max-w-screen-xl mx-auto bg-white">
                 <Header currentLanguage={locale} currentPage={''} />
                 <div>{JSON.stringify(message)}</div>
                 <main>

@@ -46,9 +46,9 @@ export default function Login({menu}) {
     }
 
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="container max-w-screen-xl sm:mx-auto bg-white">
             <Header currentPage={''} currentLanguage={locale} menu={menu.data} />
-            <div className="flex flex-col bg-pwhite">
+            <div className="flex flex-col bg-white">
                 <div className="grid mx-2 my-5 place-items-center">
                     <div className="w-11/12 p-12 px-6 py-10 bg-white rounded-lg shadow-md sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12 sm:px-10 sm:py-6 lg:shadow-lg">
                         <h1 className="text-3xl font-semibold text-center text-gray-800 lg:text-4xl">Connection</h1>

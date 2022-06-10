@@ -12,7 +12,7 @@ export default function Article({article}) {
     const {locale} = router;
 
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="container max-w-screen-xl sm:mx-auto bg-white">
             <Head>
                 <title>Cimetière russe</title>
             </Head>

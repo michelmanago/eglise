@@ -50,18 +50,18 @@ export default function Event({nextEventId}) {
         });
         //if (res.ok) router.push('/admin/events');
         console.log(res.ok);
-    }
+    };
     return (
-        <div className="max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="max-w-screen-xl sm:mx-auto bg-white">
             <Header currentLanguage={locale} currentPage={''} />
-            <main className='mx-2'>
+            <main className="mx-2">
                 <h1>Créer un event</h1>
                 <div className="flex mt-1 place-content-center">
                     <button type="submit" onClick={saveEvent} className="w-48 py-3 bg-pgold">
                         Enregistrement
                     </button>
                 </div>
-                <input type='date' value={events[0].date} onChange={changeDate} />
+                <input type="date" value={events[0].date} onChange={changeDate} />
                 <div className="flex flex-row my-1">
                     <div
                         className={`px-2 py-1 mx-1 border border-black cursor-pointer ${
@@ -111,7 +111,9 @@ export async function getServerSideProps(context) {
     }
 
     const nextEventId = await getNextEventId();
-    return {props: {
-        nextEventId: nextEventId
-    }};
+    return {
+        props: {
+            nextEventId: nextEventId,
+        },
+    };
 }

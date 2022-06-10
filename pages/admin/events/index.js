@@ -16,7 +16,7 @@ export default function Events({events}) {
     const {locale} = router;
     const [eventList, setEventList] = useState(events);
     return (
-        <div className='max-w-screen-xl bg-pwhite sm:mx-auto'>
+        <div className="max-w-screen-xl bg-white sm:mx-auto">
             <Header currentLanguage={locale} currentPage={''} />
             <main>
                 <div className="flex mt-1 place-content-center">

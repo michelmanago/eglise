@@ -27,7 +27,7 @@ export default function MediaLib({media}) {
         setMediaList(updateMedia);
     };
     return (
-        <div className="max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="max-w-screen-xl sm:mx-auto bg-white">
             <Header currentLanguage={locale} currentPage={''} />
             <main className="w-1/2 mx-auto mt-2">
                 {mediaList.map((media, index) => (

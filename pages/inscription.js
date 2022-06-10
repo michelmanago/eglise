@@ -8,7 +8,7 @@ import Header from '../components/header/header';
 import Footer from '../components/footer';
 
 // Models
-import { getMenu } from '@/Model/menu';
+import {getMenu} from '@/Model/menu';
 
 export default function Signup({menu}) {
     const router = useRouter();
@@ -36,7 +36,7 @@ export default function Signup({menu}) {
             message.push('Renseignez un nom valide');
             error = true;
         }
-        const mailFound =  await emailFound(emailRef.current?.value);
+        const mailFound = await emailFound(emailRef.current?.value);
         if (mailFound) {
             message.push('Un compte existe déjà avec cette email');
             error = true;
@@ -82,7 +82,7 @@ export default function Signup({menu}) {
     }
 
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="container max-w-screen-xl sm:mx-auto bg-white">
             <Header currentPage={''} currentLanguage={locale} menu={menu.data} />
 
             <div className="grid my-5 place-items-center">

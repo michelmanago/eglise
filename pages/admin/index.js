@@ -33,7 +33,7 @@ export default function Admin({menu}) {
     }
 
     return (
-        <div className="container max-w-screen-xl sm:mx-auto bg-pwhite">
+        <div className="container max-w-screen-xl sm:mx-auto bg-white">
             <Header currentLanguage={locale} currentPage={''} menu={menu.data} />
 
             <h1>Admin Page</h1>
