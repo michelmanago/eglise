@@ -10,6 +10,7 @@ import Header from '@/components/header/header';
 import PageContent from '@/components/page-template/commons/PageContent';
 import Footer from '@/components/footer';
 import {getSingleMedia} from '@/Model/media';
+import PageInfo from '@/components/page-info/PageInfo';
 
 // styles
 const bannerStyles = {
@@ -55,6 +56,13 @@ export default function Index({menu, page}) {
                     {/* Content */}
                     <main className="h-full max-w-screen-xl px-10 py-10 mx-auto bg-white">
                         <PageContent blocks={page.blocks} pageName={page.pageName} />
+                        <PageInfo
+                            author={page.author}
+                            media={page.associated_media}
+                            created_at={page.created_at}
+                            last_modified={page.last_modified}
+                            source={page.source}
+                        />
                     </main>
                     <Footer />
                 </div>
