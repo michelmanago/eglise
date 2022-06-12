@@ -34,7 +34,7 @@ export default function ListBlock({category, pageList}) {
             </div>
             {category === 'article' && (
                 <div className="flex flex-row justify-center mt-2">
-                    <Link href={`/articles`}>
+                    <Link href={`/articles`} locale={locale}>
                         <a className="p-2 text-white rounded bg-pgold">{t('common:article_list')}</a>
                     </Link>
                 </div>
