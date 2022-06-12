@@ -38,7 +38,7 @@ export default function Header({menu, translations}) {
             {/* Top bar */}
             <Nav menu={menu} translations={translations} />
 
-            {user ? (
+            {user && (
                 <div className="flex flex-row justify-center">
                     <div className="flex flex-row gap-2 p-2 text-white rounded-b bg-pdarkblue">
                         <div>{user.name}</div>
@@ -56,43 +56,7 @@ export default function Header({menu, translations}) {
                         </div>
                     </div>
                 </div>
-            ) : (
-                <div className="flex flex-row justify-center">
-                    <div className="flex flex-row gap-2 p-2 text-white rounded-b bg-pdarkblue">
-                        <Link href={'/login'}>
-                            <a className="text-white">Connection</a>
-                        </Link>
-                    </div>
-                </div>
             )}
-            {/*session && (
-                <div className='flex flex-row items-center justify-center'>
-                    {session.user.image && (
-                        <span style={{ backgroundImage: `url(${session.user.image})` }} className={''} />
-                    )}
-                    <span className={'mr-2'}>
-                        <small>Signed in as</small>
-                        <br />
-
-                        <strong>{session.userBase ? session.userBase.username : session.user.name}</strong>
-                    </span>
-                    <Link
-                        href={`/api/auth/signout`}
-                    >
-                        <a
-                            className={
-                                'mx-1 text-white border border-transparent rounded-md bg-pblue hover:bg-pblue-dark px-2 py-2'
-                            }
-                            onClick={e => {
-                                e.preventDefault();
-                                signOut();
-                            }}
-                        >
-                            Sign out
-                        </a>
-                    </Link>
-                </div>
-                        )*/}
         </header>
     );
 }
