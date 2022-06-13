@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
+import Cookie from 'cookie';
 //import {getSession, useSession} from 'next-auth/client';
 
 // models
@@ -17,6 +18,7 @@ import PageEditor from '../../../components/page-editor/page-editor';
 import {toMysqlFormat} from '../../../utils/utils';
 import {bulkAttributePageToMedia} from '../../../utils/fetch/attributePageToMedia';
 import {getAllCategories} from '../../../Model/category';
+import authorize from '@/lib/authorize';
 
 // utils
 
@@ -93,8 +95,16 @@ export default function PageEditorUpdate({menu, pageTranslations, categories}) {
 }
 
 export async function getServerSideProps(context) {
-    const {req} = context;
-    //const session = await getSession({req});
+    const {req, res} = context;
+    const cookie = req?.headers.cookie;
+
+    const secret = process.env.LOGIN_SECRET;
+    if (cookie) {
+        const parsedCookies = Cookie.parse(cookie);
+        authorize(res, parsedCookies, secret);
+    } else {
+        authorize(res, '', secret);
+    }
 
     // menu
     const menu = await getMenu(context.locale);
@@ -103,15 +113,6 @@ export async function getServerSideProps(context) {
     const {id} = context.params;
     const pageTranslations = await getPageTranslations(id);
     const categories = await getAllCategories();
-
-    /*if (!session) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: `/login?redirect=admin/page/${id}`,
-            },
-        };
-    }*/
 
     return {
         props: {

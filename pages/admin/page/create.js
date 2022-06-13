@@ -7,14 +7,15 @@ import Header from '../../../components/header/header';
 import PageEditor from '../../../components/page-editor/page-editor';
 
 // libs
-import {useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
+import Cookie from 'cookie';
 //import {getSession, useSession} from 'next-auth/client';
 
 // utils
 import {toMysqlFormat} from '../../../utils/utils';
 import {bulkAttributePageToMedia} from '../../../utils/fetch/attributePageToMedia';
+import authorize from '@/lib/authorize';
 
 export default function PageEditorCreate({menu, defaultType, categories}) {
     // hooks
@@ -81,17 +82,17 @@ export default function PageEditorCreate({menu, defaultType, categories}) {
 }
 
 export async function getServerSideProps(context) {
-    const {req} = context;
     const {type} = context.query;
-    /*const session = await getSession({req});
-    if (!session) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: '/login?redirect=admin/page/create',
-            },
-        };
-    }*/
+    const {req, res} = context;
+    const cookie = req?.headers.cookie;
+
+    const secret = process.env.LOGIN_SECRET;
+    if (cookie) {
+        const parsedCookies = Cookie.parse(cookie);
+        authorize(res, parsedCookies, secret);
+    } else {
+        authorize(res, '', secret);
+    }
 
     // data
     const menu = await getMenu(context.locale);
@@ -100,7 +101,7 @@ export async function getServerSideProps(context) {
     return {
         props: {
             menu: menu,
-            defaultType: type,
+            defaultType: type ? type : null,
             categories,
         },
     };

@@ -1,8 +1,10 @@
+import authorize from '@/lib/authorize';
 import React from 'react';
 //import {getSession} from 'next-auth/client';
 import Header from '../../components/header/header';
 import SignupComp from '../../components/signup';
 import {getMenu} from '../../Model/menu';
+import Cookie from 'cookie';
 
 export default function Login({menu}) {
     return (
@@ -15,22 +17,15 @@ export default function Login({menu}) {
 
 export async function getServerSideProps(context) {
     const {req} = context;
-    /*const session = await getSession({req});
+    const cookie = req?.headers.cookie;
 
-    if (!session)
-        return {
-            redirect: {
-                permanent: false,
-                destination: '/login?redirect=admin/signup',
-            },
-        };
-    if (session.userBase.role != 'admin')
-        return {
-            redirect: {
-                permanent: false,
-                destination: '/admin',
-            },
-        };*/
+    const secret = process.env.LOGIN_SECRET;
+    if (cookie) {
+        const parsedCookies = Cookie.parse(cookie);
+        authorize(res, parsedCookies, secret);
+    } else {
+        authorize(res, '', secret);
+    }
     const menu = await getMenu(context.locale);
 
     return {

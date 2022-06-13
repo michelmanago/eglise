@@ -8,10 +8,12 @@ import {useState} from 'react';
 import SortableTree, {getVisibleNodeCount} from 'react-sortable-tree-patch-react-17';
 import DefaultErrorPage from 'next/error';
 //import {getSession, useSession} from 'next-auth/client';
+import Cookie from 'cookie';
 
 // parameters
 import {getAllPages} from '../../../Model/page';
 import {useRouter} from 'next/router';
+import authorize from '@/lib/authorize';
 
 const format = page => {
     return {
@@ -155,17 +157,16 @@ export default function AdminCategory({pages, menu, categoryName}) {
 }
 
 export async function getServerSideProps(context) {
-    const {req} = context;
-    /*const session = await getSession({req});
-
-    if (!session) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: `/login?redirect=admin/category`,
-            },
-        };
-    }*/
+    const {req, res} = context;
+    const cookie = req?.headers.cookie;
+    //console.log(cookie);
+    const secret = process.env.LOGIN_SECRET;
+    if (cookie) {
+        const parsedCookies = Cookie.parse(cookie);
+        authorize(res, parsedCookies, secret);
+    } else {
+        authorize(res, '', secret);
+    }
 
     const {name} = context.params;
 

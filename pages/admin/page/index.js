@@ -1,6 +1,6 @@
 // libs
 import Head from 'next/head';
-//import {getSession, useSession} from 'next-auth/client';
+import Cookie from 'cookie';
 
 // model
 import {getMenu} from '../../../Model/menu';
@@ -10,6 +10,7 @@ import {getAllCategories} from '../../../Model/category';
 // components
 import Header from '../../../components/header/header';
 import ListPage from '../../../components/list-page/ListPage';
+import authorize from '@/lib/authorize';
 
 export default function Page({menu, pages, categories}) {
     return (
@@ -26,17 +27,16 @@ export default function Page({menu, pages, categories}) {
 }
 
 export async function getServerSideProps(context) {
-    const {req, query} = context;
-    /*const session = await getSession({req});
+    const {req, res, query} = context;
+    const cookie = req?.headers.cookie;
 
-    if (!session) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: `/login?redirect=admin/page`,
-            },
-        };
-    }*/
+    const secret = process.env.LOGIN_SECRET;
+    if (cookie) {
+        const parsedCookies = Cookie.parse(cookie);
+        authorize(res, parsedCookies, secret);
+    } else {
+        authorize(res, '', secret);
+    }
 
     const category = context.query.cat;
     const offset = query.offset ? Number(query.offset) : 0;
