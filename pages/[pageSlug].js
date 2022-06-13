@@ -66,19 +66,19 @@ export default function DynPage({menu, page}) {
                 );
             } else if (page.page === 'article') {
                 return (
-                    <div className="max-w-screen-xl px-10 py-10 mx-auto bg-white">
+                    <div className="max-w-screen-xl px-5 py-10 mx-auto bg-white">
                         <PageDefault key={page.id} page={page} />
                     </div>
                 );
             }
             return (
-                <div className="max-w-screen-xl px-10 py-10 mx-auto bg-white">
+                <div className="max-w-screen-xl px-5 py-10 mx-auto bg-white">
                     <PageWithCategory key={page.id} page={page} />
                 </div>
             );
         } else {
             return (
-                <div className="max-w-screen-xl px-10 py-10 mx-auto bg-white">
+                <div className="max-w-screen-xl px-5 py-10 mx-auto bg-white">
                     <PageDefault key={page.id} page={page} />
                 </div>
             );
