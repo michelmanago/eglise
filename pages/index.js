@@ -54,7 +54,7 @@ export default function Index({menu, page}) {
                         </div>
                     )}
                     {/* Content */}
-                    <main className="h-full max-w-screen-xl px-10 py-10 mx-auto bg-white">
+                    <main className="h-full max-w-screen-xl px-5 py-10 mx-auto bg-white">
                         <PageContent blocks={page.blocks} pageName={page.pageName} />
                         <PageInfo
                             author={page.author}
