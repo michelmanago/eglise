@@ -18,7 +18,7 @@ export default function Resetpassword({menu}) {
     let title;
     switch (locale) {
         case 'fr':
-            title = 'Réinisialisation du mot de passe';
+            title = 'Réinitialisation du mot de passe';
             break;
         case 'en':
             title = 'Reset Password';
@@ -66,7 +66,7 @@ export default function Resetpassword({menu}) {
                                     type="submit"
                                     onClick={handleReset}
                                 >
-                                    Réinisialiser
+                                    Réinitialiser
                                 </button>
                             </form>
                         </div>
