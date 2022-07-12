@@ -6,10 +6,11 @@ import useTranslation from 'next-translate/useTranslation';
 import Footer from '@/components/footer';
 
 import {getProperDate} from '@/lib/date';
-import {getAllPages} from '@/Model/page';
+import {getPaginatedPages} from '@/Model/page';
 import {getSingleMedia} from '@/Model/media';
 import {getMenu} from '@/Model/menu';
 import Header from '@/components/header/header';
+import ListPagePagination from '@/components/list-page/ListPagePagination';
 
 export default function Articles({menu, articles}) {
     const router = useRouter();
@@ -32,10 +33,12 @@ export default function Articles({menu, articles}) {
                     <div className="flex flex-row justify-center mt-2">
                         <h1>{t('articles:title')}</h1>
                     </div>
+                    {/* Pagination */}
+                    <ListPagePagination pagination={articles.pagination} />
                     <div className="container mx-auto sm:flex">
                         <main className="mx-2 mt-4 sm:mx-20">
                             <div className="flex flex-wrap">
-                                {articles?.map(article => (
+                                {articles?.array?.map(article => (
                                     <div className="w-full px-2 mt-2 sm:w-1/2 md:w-1/3" key={article.id}>
                                         {console.log(article.bandeau)}
                                         <Link href={`/${article.pageSlug}`}>
@@ -58,6 +61,9 @@ export default function Articles({menu, articles}) {
                         </main>
                     </div>
 
+                    {/* Pagination */}
+                    <ListPagePagination pagination={articles.pagination} />
+
                     <Footer />
                 </div>
             </div>
@@ -65,11 +71,16 @@ export default function Articles({menu, articles}) {
     );
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     const {locale} = context;
+    const {offset} = context.query;
     const menu = await getMenu(context.locale);
-    const articles = await getAllPages(locale, 'article');
-    for (var article of articles) {
+    //const articles = await getAllPages(locale, 'article');
+    const articles = await getPaginatedPages(offset ? offset : 0, locale, 'article');
+
+    console.log({articles});
+
+    for (var article of articles.array) {
         if (article.bandeau_id) {
             article.bandeau = await getSingleMedia(article.bandeau_id);
         }
@@ -81,6 +92,6 @@ export async function getStaticProps(context) {
     }
     return {
         props: {menu, articles}, // will be passed to the page component as props
-        revalidate: 10,
+        //revalidate: 10,
     };
 }
