@@ -54,7 +54,7 @@ export default function PageEditor({onFormSubmitted, editedPages, categories, de
 
     useEffect(() => {
         pages.forEach(page => {
-            if (page.page != defaultType) page.page = defaultType;
+            if (defaultType && page.page != defaultType) page.page = defaultType;
         });
     }, []);
     // lifecycle

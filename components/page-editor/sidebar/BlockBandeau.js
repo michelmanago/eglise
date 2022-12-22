@@ -85,7 +85,7 @@ export default function BlockBandeau({
                     opened={opened}
                     onClose={() => setOpened(false)}
                     onMediaSelected={onMediaSelected}
-                    submitLabel="Définir comme image de bandeau"
+                    submitLabel={category != 'article' ? 'Définir comme image de bandeau' : 'Définir comme vignette'}
                     accepts={['image']}
                 />
             </div>
