@@ -13,7 +13,7 @@ import Cookie from 'cookie';
 //import {getSession, useSession} from 'next-auth/client';
 
 // utils
-import {toMysqlFormat} from '../../../utils/utils';
+import {fetchWrapper, toMysqlFormat} from '../../../utils/utils';
 import {bulkAttributePageToMedia} from '../../../utils/fetch/attributePageToMedia';
 import authorize from '@/lib/authorize';
 
@@ -48,9 +48,16 @@ export default function PageEditorCreate({menu, defaultType, categories}) {
 
                 return pages;
             })
-            .then(pages => {
+            .then(async pages => {
                 // hard-coded :/
                 const originalPage = pages.find(page => page.language === defaultLocale);
+
+                // Page create => send email to all adherent
+                if (pages[0]?.page === 'article') {
+                    //sendEmailNewArticle(pages[0]);
+                    let resSender = await fetchWrapper('/api/adherent/senderNews', pages[0], 'POST');
+                    console.log({resSender});
+                }
 
                 if (originalPage) {
                     // do not prevent from leaving page

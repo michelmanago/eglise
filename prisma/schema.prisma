@@ -1,0 +1,80 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model category {
+    id    Int     @id @default(autoincrement())
+    title String? @db.VarChar(45)
+}
+
+model media_page {
+    id       Int @id @default(autoincrement())
+    media_id Int
+    page_id  Int
+}
+
+model medias {
+    id          Int     @id @default(autoincrement())
+    upload_path String? @db.VarChar(250)
+    type        String? @db.VarChar(200)
+    credit      String? @db.VarChar(1000)
+    legende     String? @db.VarChar(1000)
+    public_path String? @db.VarChar(250)
+    page_id     Int?
+}
+
+model menus {
+    id       Int     @id @default(autoincrement())
+    links    String? @db.MediumText
+    language String? @db.VarChar(45)
+}
+
+model page_translations {
+    id          Int  @id @default(autoincrement())
+    original_id Int?
+    child_id    Int?
+}
+
+model pagecontent {
+    id            Int       @id @default(autoincrement())
+    blockcontent  String?   @db.Text
+    blockid       Int?
+    language      String?   @db.Text
+    page          String?   @db.Text
+    dataType      String?   @db.VarChar(45)
+    data          String?   @db.MediumText
+    pageSlug      String?   @db.VarChar(245)
+    pageName      String?   @db.VarChar(245)
+    author        String?   @db.VarChar(100)
+    created_at    DateTime? @db.DateTime(0)
+    last_modified DateTime? @db.DateTime(0)
+    blocks        String?   @db.MediumText
+    bandeau_id    Int?
+    position      Int?
+    source        String?   @db.VarChar(800)
+}
+
+model user {
+    id       Int      @id @default(autoincrement())
+    name     String   @db.VarChar(45)
+    email    String   @db.VarChar(100)
+    password String   @db.VarChar(256)
+    role     String?  @default("admin") @db.VarChar(45)
+    tombe    String?  @db.VarChar(45)
+    validate Boolean? @default(false)
+    hash     String?  @default("null") @db.VarChar(200)
+}
+
+model adherent {
+    id      Int     @id @default(autoincrement())
+    nom     String? @db.VarChar(100)
+    prenom  String? @db.VarChar(100)
+    email   String  @db.VarChar(100)
+    postale String? @db.VarChar(500)
+    news    Boolean @default(true)
+}

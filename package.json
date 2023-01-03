@@ -9,10 +9,12 @@
         "start": "next start"
     },
     "dependencies": {
+        "@prisma/client": "^4.8.0",
         "autoprefixer": "^10.1.0",
         "bcrypt": "^5.0.0",
         "body-parser": "^1.19.0",
         "cookie": "^0.4.1",
+        "csv-parse": "^5.3.3",
         "deep-equal": "^2.0.5",
         "express": "^4.17.1",
         "fast-pass-gen": "^1.0.0",
@@ -58,6 +60,7 @@
         "uuid": "^3.4.0"
     },
     "devDependencies": {
-        "@types/cookie": "^0.4.0"
+        "@types/cookie": "^0.4.0",
+        "prisma": "^4.8.0"
     }
 }
