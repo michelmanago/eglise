@@ -1,44 +1,56 @@
-import { compare } from 'bcrypt';
+import {compare} from 'bcryptjs';
 import cookie from 'cookie';
-import { sign } from 'jsonwebtoken';
-import { query } from '../../lib/db'
+import {sign} from 'jsonwebtoken';
+import {query} from '../../lib/db';
 
 export default async function handler(req, res) {
-    const { email, password } = req.body
+    const {email, password} = req.body;
     try {
         if (req.method === 'POST') {
-            const results = await query(`
+            const results = await query(
+                `
                 SELECT * FROM user
                 WHERE email = ?
-            `, email)
+            `,
+                email,
+            );
             const user = results[0];
             if (user.validate === 0) {
-                return res.status(401).json({ message: 'Compte not activate' });
+                return res.status(401).json({message: 'Compte not activate'});
             }
             compare(password, user.password, function (err, result) {
                 if (!err && result) {
-                    const claims = { sub: user.id, myPersonEmail: user.email };
-                    const jwt = sign(claims, process.env.LOGIN_SECRET, { expiresIn: '24h' });
+                    const claims = {sub: user.id, myPersonEmail: user.email};
+                    const jwt = sign(claims, process.env.LOGIN_SECRET, {expiresIn: '24h'});
 
-                    res.setHeader('Set-Cookie', cookie.serialize('auth', jwt, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV !== 'development',
-                        sameSite: 'strict',
-                        maxAge: 3600 * 24,
-                        path: '/'
-                    }))
+                    res.setHeader(
+                        'Set-Cookie',
+                        cookie.serialize('auth', jwt, {
+                            httpOnly: true,
+                            secure: process.env.NODE_ENV !== 'development',
+                            sameSite: 'strict',
+                            maxAge: 3600 * 24,
+                            path: '/',
+                        }),
+                    );
 
-                    const userSend = { id: user.id, email: user.email, name: user.name, role: user.role, tombe: user.tombe}
+                    const userSend = {
+                        id: user.id,
+                        email: user.email,
+                        name: user.name,
+                        role: user.role,
+                        tombe: user.tombe,
+                    };
 
                     return res.json(userSend);
                 } else {
-                    return res.status(401).json({ message: 'Error with credential' });
+                    return res.status(401).json({message: 'Error with credential'});
                 }
             });
         } else {
-            return res.status(405).json({ message: 'wrong http method' });
+            return res.status(405).json({message: 'wrong http method'});
         }
     } catch (e) {
-        res.status(500).json({ message: e.message })
+        res.status(500).json({message: e.message});
     }
 }
