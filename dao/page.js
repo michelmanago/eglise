@@ -64,14 +64,15 @@ export async function insertPage({
     bandeau_id,
     position,
     source,
+    draft,
 }) {
     const blocksToJson = JSON.stringify(blocks);
 
     const res = await query(
         `
             INSERT INTO pagecontent
-            (pageName, pageSlug, page, language, author, created_at, last_modified, blocks, bandeau_id, position, source)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+            (pageName, pageSlug, page, language, author, created_at, last_modified, blocks, bandeau_id, position, source, draft)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
         [
             pageName,
@@ -85,6 +86,7 @@ export async function insertPage({
             bandeau_id,
             position,
             source,
+            draft,
         ],
     );
 
@@ -131,6 +133,7 @@ export async function updatePage({
     bandeau_id,
     position,
     source,
+    draft,
 }) {
     const updatableFields = {
         pageName,
@@ -145,6 +148,7 @@ export async function updatePage({
         bandeau_id,
         position,
         source,
+        draft,
     };
 
     const valid_fields = filterObj(updatableFields, (key, val) => val !== undefined);
@@ -282,7 +286,7 @@ export async function selectPaginatedPages(offset = 0, limit = 15, locale = null
     const res = await query(
         `
         SELECT p.*, t.original_id as original_id FROM pagecontent p, page_translations t
-        WHERE t.child_id = p.id ${conditionalWhere}
+        WHERE t.child_id = p.id AND p.draft = 0 ${conditionalWhere}
 
         ORDER BY p.created_at DESC
         LIMIT ? OFFSET ?

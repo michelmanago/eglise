@@ -20,6 +20,7 @@ const PageEditorSidebar = ({
     language,
     languagesLists,
     author,
+    draft,
     category,
     created_at,
     last_modified,
@@ -40,6 +41,12 @@ const PageEditorSidebar = ({
 
     // setters
     const setAuthor = e => updateCurrentPage({author: e.target.value});
+    const setDraft = e => {
+        const newDraft = e.target.checked ? 1 : 0;
+        console.log({draft, newDraft});
+        // updatePages({draft: draft === 1 ? 0 : 1});
+        updatePages({draft: newDraft});
+    };
     const setCreatedAt = e => {
         let date = toMysqlFormat(new Date(e.target.value));
         updatePages({created_at: date});
@@ -138,6 +145,17 @@ const PageEditorSidebar = ({
                             </button>
                         </div>
                     )}
+                </div>
+                <div className="mt-4">
+                    <div className="flex flex-row gap-1">
+                        <input
+                            id="isdraft"
+                            type="checkbox"
+                            defaultChecked={draft != null ? draft === 1 : true}
+                            onClick={setDraft}
+                        />
+                        <label htmlFor="isdraft">Brouillon</label>
+                    </div>
                 </div>
                 {/* Publier */}
                 <div className="flex justify-end">

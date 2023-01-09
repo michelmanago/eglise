@@ -53,7 +53,7 @@ export default function PageEditorCreate({menu, defaultType, categories}) {
                 const originalPage = pages.find(page => page.language === defaultLocale);
 
                 // Page create => send email to all adherent
-                if (pages[0]?.page === 'article') {
+                if (pages[0]?.page === 'article' && !pages[0].draft) {
                     //sendEmailNewArticle(pages[0]);
                     let resSender = await fetchWrapper('/api/adherent/senderNews', pages[0], 'POST');
                     console.log({resSender});

@@ -51,11 +51,14 @@ export default function PageEditor({onFormSubmitted, editedPages, categories, de
     };
 
     const canSave = !notAllowedToSave();
+    const isEditing = !!editedPages;
+    const currentPage = pages[currentPageIndex];
 
     useEffect(() => {
         pages.forEach(page => {
             if (defaultType && page.page != defaultType) page.page = defaultType;
         });
+        console.log({currentPage});
     }, []);
     // lifecycle
     useEffect(() => {
@@ -67,8 +70,6 @@ export default function PageEditor({onFormSubmitted, editedPages, categories, de
         }
     }, [canSave]);
 
-    const isEditing = !!editedPages;
-    const currentPage = pages[currentPageIndex];
     const updateCurrentPage = values => {
         if (pages && pages.length) {
             setPages(
@@ -232,6 +233,9 @@ export default function PageEditor({onFormSubmitted, editedPages, categories, de
 
     const onSubmitPage = async () => {
         let form = [...pages];
+        for (let page of pages) {
+            if (page.draft === undefined) page.draft = 1;
+        }
 
         setIsSubmitting(true);
 
@@ -331,6 +335,7 @@ export default function PageEditor({onFormSubmitted, editedPages, categories, de
                         languagesLists={languagesLists}
                         pageSlug={currentPage.pageSlug}
                         author={currentPage.author}
+                        draft={currentPage.draft}
                         category={currentPage.page ? currentPage.page : defaultType}
                         created_at={currentPage.created_at}
                         last_modified={currentPage.last_modified}

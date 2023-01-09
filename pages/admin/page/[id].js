@@ -15,7 +15,7 @@ import Header from '../../../components/header/header';
 import PageEditor from '../../../components/page-editor/page-editor';
 
 // utils
-import {toMysqlFormat} from '../../../utils/utils';
+import {fetchWrapper, toMysqlFormat} from '../../../utils/utils';
 import {bulkAttributePageToMedia} from '../../../utils/fetch/attributePageToMedia';
 import {getAllCategories} from '../../../Model/category';
 import authorize from '@/lib/authorize';
@@ -62,6 +62,17 @@ export default function PageEditorUpdate({menu, pageTranslations, categories}) {
             })
             .then(async pages => {
                 await bulkAttributePageToMedia(originalPage.id, attributedMedia);
+                console.log({draftOrigin: originalPage.draft, newDraft: pages[0].draft});
+
+                if (pages[0].page === 'article' && originalPage.draft && !pages[0].draft) {
+                    console.log({
+                        msg: 'Page is no more in draft mode',
+                        ogPagedraft: originalPage.draft,
+                        newPagedraft: pages[0].draft,
+                    });
+                    let resSender = await fetchWrapper('/api/adherent/senderNews', pages[0], 'POST');
+                    console.log({resSender});
+                }
 
                 return pages;
             })

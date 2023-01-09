@@ -6,7 +6,7 @@ import authorize from '@/lib/authorize';
 import {getProperDate} from '@/lib/date';
 
 import Footer from '@/components/footer';
-import {getPageByType} from '@/Model/page';
+import {getAllPageByType} from '@/Model/page';
 import {getSingleMedia} from '@/Model/media';
 import Header from '@/components/header/header';
 import {getMenu} from '@/Model/menu';
@@ -64,7 +64,7 @@ export async function getServerSideProps(context) {
 
     const menu = await getMenu(context.locale);
 
-    const articles = await getPageByType('article');
+    const articles = await getAllPageByType('article');
     for (var article of articles) {
         if (article.bandeau_id) {
             article.bandeau = await getSingleMedia(article.bandeau_id);

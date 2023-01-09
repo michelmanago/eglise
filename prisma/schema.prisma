@@ -57,6 +57,7 @@ model pagecontent {
     bandeau_id    Int?
     position      Int?
     source        String?   @db.VarChar(800)
+    draft         Boolean   @default(false)
 }
 
 model user {

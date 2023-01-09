@@ -64,7 +64,8 @@ export async function updateTranslations(pages) {
     );
     const updatedIds = await Promise.all(updatePagePromises);
 
-    return pages.map(page => page.id);
+    //return pages.map(page => page.id);
+    return pages;
 }
 
 export async function getPageTranslations(originalPageId) {
@@ -181,11 +182,23 @@ export async function getPageBySlug(pageSlug, specificContext = '') {
     }
 }
 
-export async function getPageByType(pageType) {
+export async function getAllPageByType(pageType) {
     const res = await query(
         `
         SELECT * FROM pagecontent
         WHERE page = ?;
+        `,
+        [pageType],
+    );
+
+    return JSON.parse(JSON.stringify(res));
+}
+
+export async function getPageByType(pageType) {
+    const res = await query(
+        `
+        SELECT * FROM pagecontent
+        WHERE draft = 0 && page = ?;
         `,
         [pageType],
     );
