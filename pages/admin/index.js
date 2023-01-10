@@ -45,6 +45,7 @@ export default function Admin({menu}) {
                         <div className="flex flex-col">
                             <BlockLink label="Pages" href="/admin/page" />
                             <BlockLink label="Articles" href="/admin/articles" />
+                            <BlockLink label="Adherents" href="/admin/adherent" />
                             <BlockLink label="Catégories" href="/admin/category" />
                             <BlockLink label="Menus de navigation" href="/admin/editor-menu" />
                             <BlockLink label="Utilisateurs" href="/admin/users/create" />
