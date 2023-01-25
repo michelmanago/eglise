@@ -42,7 +42,8 @@ const PageEditorSidebar = ({
     // setters
     const setAuthor = e => updateCurrentPage({author: e.target.value});
     const setDraft = e => {
-        const newDraft = e.target.checked ? 1 : 0;
+        // const newDraft = e.target.checked ? 1 : 0;
+        const newDraft = e.target.checked;
         console.log({draft, newDraft});
         // updatePages({draft: draft === 1 ? 0 : 1});
         updatePages({draft: newDraft});
@@ -151,7 +152,7 @@ const PageEditorSidebar = ({
                         <input
                             id="isdraft"
                             type="checkbox"
-                            defaultChecked={draft != null ? draft === 1 : true}
+                            defaultChecked={draft != undefined ? draft : true}
                             onClick={setDraft}
                         />
                         <label htmlFor="isdraft">Brouillon</label>

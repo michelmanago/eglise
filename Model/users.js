@@ -1,86 +1,116 @@
-import {query} from '@/lib/db';
+import prisma from '@/lib/prisma';
 
-//CREATE TABLE `user` (
-//    `id` int(11) NOT NULL AUTO_INCREMENT,
-//    `name` varchar(45) NOT NULL,
-//    `email` varchar(100) NOT NULL,
-//    `password` varchar(256) NOT NULL,
-//    `role` varchar(45) DEFAULT 'admin',
-//    `tombe` varchar(45) DEFAULT NULL,
-//    PRIMARY KEY (`id`)
-//);
+export async function createUser(user) {
+    const {name, email, password, role, hash} = user;
+    try {
+        const res = await prisma.user.create({
+            data: {
+                name,
+                email,
+                password,
+                role,
+                validate: false,
+                hash,
+            },
+        });
+        return res;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
 
 export async function getUsers() {
-    const results = await query(`
-        SELECT id, name, email, role, tombe, validate FROM user;
-    `);
-
-    //console.log('getUsers => ', JSON.parse(JSON.stringify(results)));
-
-    //return JSON.parse(JSON.stringify(results));
-    return results;
+    const res = await prisma.user.findMany();
+    return res;
 }
 
 export async function getUserById(userId) {
-    const results = await query(
-        `
-        SELECT * FROM user
-        WHERE id = ?;
-        `,
-        userId,
-    );
-
-    if (results.length >= 1) return results[0];
-    else return null;
+    const res = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
+    return res;
 }
 
 export async function getUserByHash(hash) {
-    const users = await query(
-        `
-            SELECT id, name, email, role, tombe, validate FROM user where hash like ?;
-        `,
-        hash,
-    );
-    if (users.length >= 1) return users[0];
-    else return null;
+    const res = await prisma.user.findMany({
+        where: {
+            hash,
+        },
+    });
+    return res.length > 0 ? res[0] : null;
 }
 
 export async function getUserByEmail(userEmail) {
-    const users = await query(
-        `
-            SELECT id, name, email, role, tombe FROM user where email like ?;
-        `,
-        userEmail,
-    );
-    if (users.length >= 1) return users[0];
-    else return null;
+    const res = await prisma.user.findMany({
+        where: {
+            email: userEmail,
+        },
+    });
+    return res.length > 0 ? res[0] : null;
 }
 
 export async function updateUser(user) {
     const {id, name, email, role, tombe} = user;
-    const results = await query(
-        `
-        UPDATE user
-        SET name = ?, 
-            email = ?,
-            role = ?,
-            tombe = ?
-        WHERE id = ?;
-        `,
-        [name, email, role, tombe, id],
-    );
-    return results;
+    const res = await prisma.user.update({
+        where: {
+            id,
+        },
+        data: {
+            name,
+            email,
+            role,
+            tombe,
+        },
+    });
+    return res;
+}
+
+export async function updateUserHash(userId, hash) {
+    const res = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            hash,
+        },
+    });
+    return res;
+}
+
+export async function activateUser(userId) {
+    const res = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            validate: true,
+            hash: null,
+        },
+    });
+    return res;
 }
 
 export async function updateUserPassword(userId, password) {
-    const results = await query(
-        `
-        UPDATE user
-        SET password = ?,
-        hash = ?
-        WHERE id = ?;
-        `,
-        [password, null, userId],
-    );
-    return results;
+    const res = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            password,
+            hash: null,
+        },
+    });
+    return res;
+}
+
+export async function deleteUser(user) {
+    const userDelete = await prisma.user.delete({
+        where: {
+            id: user.id,
+        },
+    });
+    return userDelete;
 }

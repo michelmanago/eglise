@@ -1,8 +1,6 @@
-//import { NextApiHandler } from 'next'
-import {query} from '@/lib/db';
 import {sendResetPasswordEmail} from '@/lib/emailSender';
-import e from 'express';
-import {v4 as uuidv4} from 'uuid'
+import {getUserByEmail, updateUserHash} from '@/Model/users';
+import {v4 as uuidv4} from 'uuid';
 
 export default async function handler(req, res) {
     //const { name, language, string, page } = req.body
@@ -13,27 +11,15 @@ export default async function handler(req, res) {
             return res.status(400).json({message: '`id` required'});
         }
         if (req.method === 'GET') {
-            const users = await query(
-                `
-                    SELECT id, name, email, role, tombe FROM user where email like ?
-                `,
-                email,
-            );
+            const user = await getUserByEmail(email);
+            if (!user) return res.status(500).json({message: 'user not found'});
 
             const newHash = uuidv4();
 
-            const results = await query(
-                `
-                UPDATE user
-                SET hash = ?
-                WHERE id = ?
-                `,
-                [newHash, users[0].id],
-            );
+            const res = await updateUserHash(user.id, newHash);
+            await sendResetPasswordEmail({toUser: user, hash: newHash});
 
-            await sendResetPasswordEmail({toUser: users[0], hash: newHash});
-
-            return res.json(users[0]);
+            return res.json(user);
         } else {
             console.log('error http method');
             res.status(405).json({message: 'Wrong HTTP method'});
