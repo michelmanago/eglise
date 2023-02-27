@@ -1,3 +1,4 @@
+import prisma from '@/lib/prisma';
 import {filterObj} from '../utils/utils';
 
 export async function selectPagesByName(name) {
@@ -26,7 +27,7 @@ export async function selectOriginalPageId(childId) {
 }
 
 export async function deletePages(pageIds) {
-    const res = await prisma.pagecontent.deleteMany({
+    const res = await Prisma.pagecontent.deleteMany({
         where: {
             id: {
                 in: pageIds,
