@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 model category {
@@ -18,6 +19,8 @@ model media_page {
     page_id  Int
 
     media medias @relation(fields: [media_id], references: [id])
+
+    @@index([media_id])
 }
 
 model medias {
@@ -43,6 +46,8 @@ model page_translations {
     child_id    Int
 
     childPage pagecontent @relation(fields: [child_id], references: [id], onDelete: Cascade)
+
+    @@index([child_id])
 }
 
 model pagecontent {
