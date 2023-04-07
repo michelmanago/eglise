@@ -1,4 +1,5 @@
 // dao
+import prisma from '@/lib/prisma';
 import {
     putSingleMedia,
     selectMedia,
