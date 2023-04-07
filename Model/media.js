@@ -1,4 +1,5 @@
 // dao
+import prisma from '@/lib/prisma';
 import {
     putSingleMedia,
     selectMedia,
@@ -41,6 +42,15 @@ export async function updateMedia(media_id, fields) {
     }
 
     return the_media;
+}
+
+export async function deleteMedia(media_id) {
+    let mediaDelete = await prisma.medias.delete({
+        where: {
+            id: parseInt(media_id),
+        },
+    });
+    return JSON.parse(JSON.stringify(mediaDelete));
 }
 
 export async function getSingleMedia(media_id) {
