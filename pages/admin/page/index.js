@@ -13,6 +13,7 @@ import ListPage from '../../../components/list-page/ListPage';
 import authorize from '@/lib/authorize';
 
 export default function Page({menu, pages, categories}) {
+    console.log({pages});
     return (
         <>
             <Head>

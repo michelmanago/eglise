@@ -1,56 +1,49 @@
-import {query} from '../lib/db';
+import prisma from '@/lib/prisma';
 import {filterObj} from '../utils/utils';
 
 export async function selectPagesByName(name) {
-    const res = await query(
-        `
-        SELECT 
-            DISTINCT pt.original_id, 
-            p.* 
-        FROM centenaire.pagecontent p,
-            page_translations pt
-        WHERE p.pageName LIKE '%${name}%'  AND pt.original_id = p.id
-        `,
-        [name],
-    );
+    const res = await prisma.pagecontent.findMany({
+        where: {
+            pageName: {
+                contains: name,
+            },
+        },
+    });
 
     return JSON.parse(JSON.stringify(res));
 }
 
 export async function selectOriginalPageId(childId) {
-    const res = await query(
-        `
-            SELECT original_id FROM page_translations
-            WHERE child_id = ?
-        `,
-        [childId],
-    );
+    const res = await prisma.page_translations.findMany({
+        where: {
+            child_id: childId,
+        },
+        select: {
+            original_id: true,
+        },
+    });
 
     return JSON.parse(JSON.stringify(res[0]));
 }
 
 export async function deletePages(pageIds) {
-    const res = await query(
-        `
-            DELETE FROM pagecontent
-            WHERE id IN(?)
-        `,
-        [pageIds],
-    );
-
-    return res.affectedRows;
+    const res = await Prisma.pagecontent.deleteMany({
+        where: {
+            id: {
+                in: pageIds,
+            },
+        },
+    });
+    return res;
 }
 
 export async function deleteTranslations(translationsIds) {
-    const res = await query(
-        `
-            DELETE FROM page_translations
-            WHERE id IN(?)
-        `,
-        [translationsIds],
-    );
-
-    return res.affectedRows;
+    const res = await prisma.page_translations.deleteMany({
+        id: {
+            in: translationsIds,
+        },
+    });
+    return res;
 }
 
 export async function insertPage({
@@ -67,56 +60,55 @@ export async function insertPage({
     draft,
 }) {
     const blocksToJson = JSON.stringify(blocks);
-
-    const res = await query(
-        `
-            INSERT INTO pagecontent
-            (pageName, pageSlug, page, language, author, created_at, last_modified, blocks, bandeau_id, position, source, draft)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `,
-        [
-            pageName,
-            pageSlug,
-            page,
+    const res = await prisma.pagecontent.create({
+        data: {
             language,
+            page,
+            pageSlug,
+            pageName,
             author,
-            created_at,
-            created_at,
-            blocksToJson,
+            created_at: new Date(created_at),
+            last_modified: new Date(created_at),
+            blocks: blocksToJson,
             bandeau_id,
             position,
             source,
             draft,
-        ],
-    );
+        },
+    });
 
-    return res.affectedRows ? res.insertId : null;
+    return res ? res.id : null;
 }
 
 export async function insertTranslation(originalId, childId) {
-    const res = await query(
-        `
-            INSERT INTO page_translations
-            (original_id, child_id)
-            VALUES (?, ?)
-        `,
-        [originalId, childId],
-    );
-
-    return res.affectedRows ? res.insertId : null;
+    const res = await prisma.page_translations.create({
+        data: {
+            original_id: originalId,
+            child_id: childId,
+        },
+    });
+    return res ? res.id : null;
 }
 
 export async function selectTranslations(originalPageId) {
-    const res = await query(
-        `
-            SELECT p.*, t.child_id, t.original_id, t.id translation_id FROM 
-                page_translations t, pagecontent p 
-            WHERE t.child_id = p.id AND t.original_id = ?;
-        `,
-        [originalPageId],
-    );
+    let res = await prisma.page_translations.findMany({
+        where: {
+            original_id: parseInt(originalPageId),
+        },
+        include: {
+            childPage: true,
+        },
+    });
 
-    return JSON.parse(JSON.stringify(res));
+    let response = [{}, {}, {}];
+
+    res.forEach(item => {
+        if (item.childPage.language === 'fr') response[0] = {...item.childPage};
+        if (item.childPage.language === 'en') response[1] = {...item.childPage};
+        if (item.childPage.language === 'ru') response[2] = {...item.childPage};
+    });
+
+    return JSON.parse(JSON.stringify(response));
 }
 
 export async function updatePage({
@@ -159,25 +151,13 @@ export async function updatePage({
         throw new Error('no fields found');
     } else {
         // SETTERS
-        let setters = '';
+        let settersObj = {};
 
         const fieldsKey = Object.keys(valid_fields);
-
-        fieldsKey.map((key, index) => {
-            if (index === 0) {
-                setters += key + ' = ?';
-            } else {
-                setters += ',' + key + ' = ?';
-            }
-        });
-
-        // VALUES
-        let values = [];
-
-        fieldsKey.forEach(key => {
+        fieldsKey.map(key => {
             let val = updatableFields[key];
-
-            // maybe needs to stringify json
+            if (key === 'created_at') val = new Date(val);
+            if (key === 'last_modified') val = new Date(val);
             if (key === 'blocks' && typeof val !== 'string') {
                 val = JSON.stringify(val);
             }
@@ -185,130 +165,88 @@ export async function updatePage({
             if (key === 'page' && !val) {
                 val = null;
             }
-
-            // add to values
-            values.push(val);
+            settersObj[key] = val;
+        });
+        const res = await prisma.pagecontent.update({
+            where: {id},
+            data: settersObj,
         });
 
-        // finally add id
-        values.push(id);
-
-        const res = await query(
-            `
-                UPDATE pagecontent
-                    SET ${setters}
-                    
-                WHERE id = ?
-            `,
-            values,
-        );
-
-        if (!res.affectedRows) {
-            throw {
-                message: 'page not found id: ' + id,
-                status: 404,
-            };
-        } else {
-            return res.affectedRows;
-        }
+        return res;
     }
 }
 
 export async function selectPageBySlug(pageSlug) {
-    const res = await query(
-        `
-        SELECT * FROM pagecontent
-        WHERE pageSlug = ?
-        `,
-        [pageSlug],
-    );
+    let param = {
+        where: {
+            pageSlug: pageSlug,
+        },
+    };
+    const res = await prisma.pagecontent.findUnique(param);
 
-    if (res.length >= 1) {
-        console.log(JSON.parse(JSON.stringify(res[0])));
-        return JSON.parse(JSON.stringify(res[0]));
-    } else {
-        return null;
-    }
+    return JSON.parse(JSON.stringify(res));
 }
 
 export async function selectAllPages(locale = null, category = '') {
-    let parameters = [];
-    let conditionalWhere = '';
-
+    let parameters = {};
     if (locale) {
-        parameters.push(locale);
-        conditionalWhere += ' AND language = ? ';
+        parameters.language = locale;
     }
-
     if (category) {
-        parameters.push(category);
-        conditionalWhere += ' AND page = ? ';
+        parameters.page = category;
     }
 
-    console.log({conditionalWhere});
+    parameters.AND = {
+        OR: [{page: {not: 'defunt'}}, {page: null}],
+    };
 
-    const res = await query(
-        `
-        SELECT p.*, t.original_id as original_id FROM pagecontent p, page_translations t
-        WHERE t.child_id = p.id ${conditionalWhere}
-
-        ORDER BY p.created_at DESC
-        `,
-        parameters,
-    );
+    const res = await prisma.pagecontent.findMany({
+        where: parameters,
+        orderBy: {
+            created_at: 'desc',
+        },
+    });
 
     if (res.length >= 1) return JSON.parse(JSON.stringify(res));
     else return null;
 }
 
 export async function selectPaginatedPages(offset = 0, limit = 15, locale = null, category = '', search) {
-    let parameters = [];
-    let conditionalWhere = '';
+    let parameters = {};
 
     if (locale) {
-        parameters.push(locale);
-        conditionalWhere += ' AND language = ? ';
+        parameters.language = locale;
     }
-
     if (category) {
-        parameters.push(category);
-        conditionalWhere += ' AND page = ? ';
+        parameters.page = category;
     }
 
     if (search) {
-        conditionalWhere += `AND pageName LIKE '%${search}%'`;
+        parameters.pageName = {contains: search};
     }
 
-    // pagination
-    parameters.push(limit);
-    parameters.push(offset * limit);
+    parameters.AND = {
+        OR: [{page: {not: 'defunt'}}, {page: null}],
+    };
 
-    const res = await query(
-        `
-        SELECT p.*, t.original_id as original_id FROM pagecontent p, page_translations t
-        WHERE t.child_id = p.id AND p.draft = 0 ${conditionalWhere}
-
-        ORDER BY p.created_at DESC
-        LIMIT ? OFFSET ?
-        `,
-        parameters,
-    );
-
-    // count pages
-    const parametersForCount = [];
-    if (locale) parametersForCount.push(locale);
-    if (category) parametersForCount.push(category);
+    const res = await prisma.pagecontent.findMany({
+        where: parameters,
+        orderBy: {
+            created_at: 'desc',
+        },
+        skip: offset * limit,
+        take: limit,
+    });
 
     let item_count = 0;
-    item_count = await query(
-        `
-        SELECT p.*, t.original_id as original_id 
-        FROM pagecontent p, page_translations t
-        WHERE t.child_id = p.id ${conditionalWhere} AND page != 'defunt'
-    `,
-        parametersForCount,
-    );
-    item_count = item_count.length;
+
+    const res2 = await prisma.pagecontent.findMany({
+        where: parameters,
+        orderBy: {
+            created_at: 'desc',
+        },
+    });
+    item_count = res2.length;
 
     const pages = JSON.parse(JSON.stringify(res));
 

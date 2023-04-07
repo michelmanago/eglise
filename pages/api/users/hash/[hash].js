@@ -1,4 +1,4 @@
-import {query} from '@/lib/db';
+import {getUserByHash} from '@/Model/users';
 
 export default async function handler(req, res) {
     const {hash} = req.query;
@@ -8,11 +8,8 @@ export default async function handler(req, res) {
             return res.status(400).json({message: '`hash` required'});
         }
         if (req.method === 'GET') {
-            const users = await query(`SELECT * FROM user WHERE hash LIKE ?`, [hash]);
-
-            console.log(hash, users);
-            if (users.length === 0) return res.json([]);
-            return res.json(users[0]);
+            const user = await getUserByHash(hash);
+            return res.json(user);
         } else {
             res.status(405).json({message: 'Method Not Allowed'});
         }

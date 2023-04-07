@@ -1,20 +1,13 @@
+import {getUserByEmail} from '@/Model/users';
 import {compare} from 'bcryptjs';
 import cookie from 'cookie';
 import {sign} from 'jsonwebtoken';
-import {query} from '../../lib/db';
 
 export default async function handler(req, res) {
     const {email, password} = req.body;
     try {
         if (req.method === 'POST') {
-            const results = await query(
-                `
-                SELECT * FROM user
-                WHERE email = ?
-            `,
-                email,
-            );
-            const user = results[0];
+            const user = await getUserByEmail(email);
             if (user.validate === 0) {
                 return res.status(401).json({message: 'Compte not activate'});
             }

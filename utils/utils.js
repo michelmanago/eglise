@@ -31,7 +31,7 @@ export function inRange(x, min, max) {
 
 // Menu
 export function getMenuHref(href) {
-    return href.startsWith('/') ? href : `/${href}`;
+    return href?.startsWith('/') ? href : `/${href}`;
 }
 
 // Tree data

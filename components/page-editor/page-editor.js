@@ -234,7 +234,8 @@ export default function PageEditor({onFormSubmitted, editedPages, categories, de
     const onSubmitPage = async () => {
         let form = [...pages];
         for (let page of pages) {
-            if (page.draft === undefined) page.draft = 1;
+            // if (page.draft === undefined) page.draft = 1;
+            if (page.draft === undefined) page.draft = true;
         }
 
         setIsSubmitting(true);
