@@ -45,7 +45,8 @@ export default function Articles({menu, articles}) {
                                             <a className="flex flex-col gap-1">
                                                 {article.bandeau ? (
                                                     <img
-                                                        className="mx-auto"
+                                                        className="object-cover mx-auto"
+                                                        style={{aspectRatio: '4 / 3'}}
                                                         src={`${apiMediaUrl}${article.bandeau.public_path}`}
                                                     />
                                                 ) : null}
