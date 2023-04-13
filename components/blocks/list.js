@@ -1,4 +1,4 @@
-import {getProperDate} from '@/lib/date';
+import {formatDateToDisplayByLocale, getProperDate} from '@/lib/date';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -25,7 +25,8 @@ export default function ListBlock({category, pageList}) {
                                     ) : null}
                                     <h3 className="inline-block">{article.pageName}</h3>
                                     <div className="inline-block text-sm">
-                                        {t('common:article_date')} {getProperDate(article.created_at)}
+                                        {t('common:article_date')}{' '}
+                                        {formatDateToDisplayByLocale(article.created_at, locale)}
                                     </div>
                                 </a>
                             </Link>
