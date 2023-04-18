@@ -1,4 +1,4 @@
-import {getProperDate} from '@/lib/date';
+import {formatDateToDisplayByLocale, getProperDate} from '@/lib/date';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -21,11 +21,16 @@ export default function ListBlock({category, pageList}) {
                             <Link href={`/${article.pageSlug}`}>
                                 <a className="flex flex-col gap-1">
                                     {article.bandeau ? (
-                                        <img className="mx-auto" src={`${apiMediaUrl}${article.bandeau.public_path}`} />
+                                        <img
+                                            className="object-cover mx-auto"
+                                            style={{aspectRatio: '4 / 3'}}
+                                            src={`${apiMediaUrl}${article.bandeau.public_path}`}
+                                        />
                                     ) : null}
                                     <h3 className="inline-block">{article.pageName}</h3>
                                     <div className="inline-block text-sm">
-                                        {t('common:article_date')} {getProperDate(article.created_at)}
+                                        {t('common:article_date')}{' '}
+                                        {formatDateToDisplayByLocale(article.created_at, locale)}
                                     </div>
                                 </a>
                             </Link>
