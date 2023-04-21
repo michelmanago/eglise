@@ -34,8 +34,18 @@ export default function Articles({articles, menu}) {
                         <Link href={`/admin/page/${article.id}`}>
                             <a className="flex flex-col gap-1">
                                 {article.bandeau ? (
-                                    <img className="mx-auto" src={`${apiMediaUrl}${article.bandeau.public_path}`} />
-                                ) : null}
+                                    <img
+                                        className="object-cover mx-auto"
+                                        style={{aspectRatio: '4 / 3'}}
+                                        src={`${apiMediaUrl}${article.bandeau.public_path}`}
+                                    />
+                                ) : (
+                                    <img
+                                        className="object-cover mx-auto border border-black"
+                                        style={{aspectRatio: '4 / 3'}}
+                                        src="/static/img/default-article-img.jpg"
+                                    />
+                                )}
                                 <h3 className="inline-block">{article.pageName}</h3>
                                 <div className="inline-block text-sm">
                                     {t('common:article_date')} {getProperDate(article.created_at)}
