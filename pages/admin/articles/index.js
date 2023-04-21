@@ -29,21 +29,33 @@ export default function Articles({articles, menu}) {
                 </Link>
             </div>
             <div className="flex flex-wrap my-2">
-                {articleList?.map(article => (
-                    <div className="w-1/3 px-2 mt-2" key={article.id}>
-                        <Link href={`/admin/page/${article.id}`}>
-                            <a className="flex flex-col gap-1">
-                                {article.bandeau ? (
-                                    <img className="mx-auto" src={`${apiMediaUrl}${article.bandeau.public_path}`} />
-                                ) : null}
-                                <h3 className="inline-block">{article.pageName}</h3>
-                                <div className="inline-block text-sm">
-                                    {t('common:article_date')} {getProperDate(article.created_at)}
-                                </div>
-                            </a>
-                        </Link>
-                    </div>
-                ))}
+                {articleList
+                    ?.sort((a, b) => (a.created_at > b.created_at ? -1 : b.created_at > a.created_at ? 1 : 0))
+                    .map(article => (
+                        <div className="w-1/3 px-2 mt-2" key={article.id}>
+                            <Link href={`/admin/page/${article.id}`}>
+                                <a className="flex flex-col gap-1">
+                                    {article.bandeau ? (
+                                        <img
+                                            className="object-cover mx-auto"
+                                            style={{aspectRatio: '4 / 3'}}
+                                            src={`${apiMediaUrl}${article.bandeau.public_path}`}
+                                        />
+                                    ) : (
+                                        <img
+                                            className="object-cover mx-auto border border-black"
+                                            style={{aspectRatio: '4 / 3'}}
+                                            src="/static/img/default-article-img.jpg"
+                                        />
+                                    )}
+                                    <h3 className="inline-block">{article.pageName}</h3>
+                                    <div className="inline-block text-sm">
+                                        {t('common:article_date')} {getProperDate(article.created_at)}
+                                    </div>
+                                </a>
+                            </Link>
+                        </div>
+                    ))}
             </div>
             <Footer />
         </div>

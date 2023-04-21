@@ -49,7 +49,13 @@ export default function Articles({menu, articles}) {
                                                         style={{aspectRatio: '4 / 3'}}
                                                         src={`${apiMediaUrl}${article.bandeau.public_path}`}
                                                     />
-                                                ) : null}
+                                                ) : (
+                                                    <img
+                                                        className="object-cover mx-auto border border-black"
+                                                        style={{aspectRatio: '4 / 3'}}
+                                                        src="/static/img/default-article-img.jpg"
+                                                    />
+                                                )}
                                                 <h3 className="inline-block">{article.pageName}</h3>
                                                 <div className="inline-block text-sm">
                                                     {t('common:article_date')} {getProperDate(article.created_at)}
