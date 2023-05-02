@@ -73,7 +73,7 @@ export default function Index({menu, page}) {
     );
 }
 
-export const getServerSideProps = async ctx => {
+export const getStaticProps = async ctx => {
     const menu = await getMenu(ctx.locale);
     let homePages = await getLastPages(ctx.locale, 'home', 1);
     // so that we can directly manipulate JS object in Components

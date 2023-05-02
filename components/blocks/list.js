@@ -17,7 +17,6 @@ export default function ListBlock({category, pageList}) {
                     .slice(0, 6)
                     .map(article => (
                         <div className="w-full px-2 mt-2 sm:w-1/2 md:w-1/3" key={article.id}>
-                            {console.log(article.bandeau)}
                             <Link href={`/${article.pageSlug}`}>
                                 <a className="flex flex-col gap-1">
                                     {article.bandeau ? (
