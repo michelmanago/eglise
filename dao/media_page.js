@@ -21,11 +21,23 @@ export async function selectMediaPage(media_id, page_id) {
 }
 
 export async function deleteMediaPage(media_id, page_id) {
-    const res = await prisma.media_page.delete({
-        where: {
-            media_id: parseInt(media_id),
-            page_id,
-        },
-    });
-    return res;
+    try {
+        const mediaPage = await prisma.media_page.findMany({
+            where: {
+                media_id: parseInt(media_id),
+                page_id: parseInt(page_id),
+            },
+        });
+        console.log({mediaPage});
+        if (!mediaPage) return null;
+        const res = await prisma.media_page.delete({
+            where: {
+                id: mediaPage[0].id,
+            },
+        });
+        return res;
+    } catch (error) {
+        console.log({error});
+        return null;
+    }
 }
