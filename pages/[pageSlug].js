@@ -6,7 +6,6 @@ import Head from 'next/head';
 
 // component
 import Header from '../components/header/header';
-//import Header from '@/components/header';
 import PageDefault from '../components/page-template/PageDefault';
 import PageWithCategory from '../components/page-template/PageWithCategory';
 
@@ -21,7 +20,6 @@ import {useRouter} from 'next/router';
 import {getSingleMedia} from '@/Model/media';
 
 import DefuntBlock from '@/components/blocks/defunt';
-//import { getSingleMedia } from '@/Model/media';
 
 const NavCompositeur = dynamic(() => import('../components/compositeurs/nav'));
 
@@ -143,31 +141,19 @@ export async function getStaticPaths({locales}) {
 
 export async function getStaticProps(context) {
     const {pageSlug} = context.params;
-    //console.log(context.locale + '/' + pageSlug);
     const menu = await getMenu(context.locale);
     var page = await getPageBySlug(context.locale + '/' + pageSlug, 'render').catch(err => null);
 
-    //console.log(page);
     if (page) {
         for (var block of page?.blocks) {
-            //console.log('block type', block.type);
             if (block.type === 'list') {
                 const pageList = await getPageByType(block.content);
-                //console.log(block.bandeau_id);
-                //block.bandeau = await getSingleMedia(block.bandeau_id)
                 for (var pageInList of pageList) {
                     if (pageInList.bandeau_id) {
                         pageInList.bandeau = await getSingleMedia(pageInList.bandeau_id);
                     }
                 }
                 block.pageList = pageList.filter(page => page.language === context.locale);
-            } else if (block.type === 'defunt') {
-                var defunt = await getDefunt(block.content);
-                if (context.locale != 'fr' && defunt.infoLangs[context.locale]) {
-                    block.defunt = defunt.infoLangs[context.locale] ? defunt.infoLangs[context.locale] : null;
-                } else {
-                    block.defunt = defunt;
-                }
             }
         }
     }

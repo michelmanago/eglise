@@ -73,16 +73,18 @@ export default function Index({menu, page}) {
     );
 }
 
-export const getServerSideProps = async ctx => {
+export const getStaticProps = async ctx => {
     const menu = await getMenu(ctx.locale);
     let homePages = await getLastPages(ctx.locale, 'home', 1);
     // so that we can directly manipulate JS object in Components
     if (homePages && homePages[0]) {
-        const bandeau = await getServeurImageMedia(homePages[0].bandeau_id);
-        homePages[0].bandeau = bandeau;
+        if (homePages[0].bandeau_id != null) {
+            const bandeau = await getSingleMedia(homePages[0].bandeau_id);
+            homePages[0].bandeau = bandeau;
+        }
+
         homePages[0].blocks = JSON.parse(homePages[0].blocks);
         for (var block of homePages[0]?.blocks) {
-            //console.log('block type', block.type);
             if (block.type === 'list') {
                 const pageList = await getPageByType(block.content);
                 for (var pageInList of pageList) {
