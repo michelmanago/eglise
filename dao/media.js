@@ -75,15 +75,19 @@ export async function selectMediaPaginated(limit = 15, pageOffset = 0, page_id, 
         include: {pages: true},
     };
 
-    if (page_id)
+    if (page_id) {
+        // queryParam.where.pages = {
+        //     some: {page: {id: parseInt(page_id)}},
+        // };
         queryParam.where.pages = {
-            some: {page: {id: page_id}},
+            some: {id: parseInt(page_id)},
         };
+    }
     if (accepts.length > 0) queryParam.where.type = {in: accepts};
 
     item_count = (await prisma.medias.findMany(queryParam)).length;
     queryParam.take = limit;
-    queryParam.skip = parseInt(pageOffset);
+    queryParam.skip = parseInt(pageOffset) * parseInt(limit);
 
     let res = await prisma.medias.findMany(queryParam);
 
