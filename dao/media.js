@@ -65,6 +65,7 @@ export async function selectNonAssociatedMedia(limit = 15, pageOffset = 0, accep
 }
 
 export async function selectMediaPaginated(limit = 15, pageOffset = 0, page_id, accepts = [], order = 'desc') {
+    let res = null;
     let item_count = 0;
 
     let queryParam = {
@@ -72,24 +73,40 @@ export async function selectMediaPaginated(limit = 15, pageOffset = 0, page_id, 
         orderBy: {
             id: order,
         },
-        include: {pages: true},
     };
 
     if (page_id) {
-        // queryParam.where.pages = {
-        //     some: {page: {id: parseInt(page_id)}},
-        // };
-        queryParam.where.pages = {
-            some: {id: parseInt(page_id)},
+        let params = {
+            where: {
+                page_id: parseInt(page_id),
+            },
         };
+        if (accepts.length > 0)
+            params.where.media = {
+                type: {in: accepts},
+            };
+
+        item_count = await prisma.media_page.count(params);
+
+        params.include = {
+            media: true,
+        };
+        params.take = limit;
+        params.skip = parseInt(pageOffset) * parseInt(limit);
+        let resMediaPage = await prisma.media_page.findMany(params);
+
+        res = resMediaPage.map(mediaPage => {
+            return mediaPage.media;
+        });
+    } else {
+        if (accepts.length > 0) queryParam.where.type = {in: accepts};
+
+        item_count = await prisma.medias.count(queryParam);
+
+        queryParam.take = limit;
+        queryParam.skip = parseInt(pageOffset) * parseInt(limit);
+        res = await prisma.medias.findMany(queryParam);
     }
-    if (accepts.length > 0) queryParam.where.type = {in: accepts};
-
-    item_count = (await prisma.medias.findMany(queryParam)).length;
-    queryParam.take = limit;
-    queryParam.skip = parseInt(pageOffset) * parseInt(limit);
-
-    let res = await prisma.medias.findMany(queryParam);
 
     return {
         array: res,
