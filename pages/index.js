@@ -101,5 +101,6 @@ export const getStaticProps = async ctx => {
             menu,
             page: homePages ? homePages[0] : null,
         },
+        revalidate: 10,
     };
 };
